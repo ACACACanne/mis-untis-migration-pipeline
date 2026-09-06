@@ -26,16 +26,3 @@ async def root():
         "Pipeline": "MIS to Untis Migration",
         "version": "1.0.0",
     }
-
-@app.get("/api/v1/health")
-async def health():
-    return {
-        "arbor_api": "connected",
-        "bromcom_api": "connected",
-        "untis_target": "ready",
-        "staged_records": 1420,
-        "quarantined_conflicts": 14
-    }
-
-if __name__ == "__main__":
-    uvicorn.run("main.py:app", host="127.0.0.1", port=8000, reload=True)
