@@ -1,0 +1,76 @@
+{
+  "Staff": [
+    {
+      "StaffId": 801,
+      "Initials": "DM",
+      "ExternalId": "TR_DM",
+      "FirstName": "David",
+      "LastName": "McGowan",
+      "Active": true
+    },
+    {
+      "StaffId": 802,
+      "Initials": "GR",
+      "ExternalId": "TR_GR",
+      "FirstName": "Gemma",
+      "LastName": "Robinson",
+      "Active": true
+    },
+    {
+      "StaffId": 803,
+      "Initials": "TB",
+      "ExternalId": "TR_TB",
+      "FirstName": "Thomas",
+      "LastName": "Bennett",
+      "Active": true
+    },
+    {
+      "StaffId": 804,
+      "Initials": "DB",
+      "ExternalId": "TR_DB",
+      "FirstName": "Dan",
+      "LastName": "Baldwin",
+      "Active": true
+    }
+  ],
+  "Rooms": [
+    {
+      "RoomId": 401,
+      "RoomName": "7B",
+      "UntisCode": "RM_7B",
+      "MaxCapacity": 30
+    }
+  ],
+  "Classes": [
+    {
+      "ClassId": 901,
+      "ClassCode": "7A",
+      "UntisId": "CL_7A",
+      "YearGroup": "Year 7"
+    },
+    {
+      "ClassId": 902,
+      "ClassCode": "7B",
+      "UntisId": "CL_7B",
+      "YearGroup": "Year 7"
+    },
+    {
+      "ClassId": 903,
+      "ClassCode": "10",
+      "UntisId": "CL_10",
+      "YearGroup": "Year 10"
+    }
+  ],
+  "CurrentTimetableSlots": [
+    {
+      "SlotId": 12001,
+      "ClassId": 901,
+      "StaffId": 801,
+      "SubjectCode": "SU_En",
+      "DayNumber": 1,
+      "PeriodNumber": 1,
+      "StartTime": "09:00:00",
+      "EndTime": "10:00:00"
+    }
+  ]
+}

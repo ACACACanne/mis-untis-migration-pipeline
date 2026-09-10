@@ -1,0 +1,93 @@
+{
+  "staff": [
+    {
+      "id": 101,
+      "uuid": "arb-staff-0101",
+      "legacy_id": "TR_DM",
+      "first_name": "David",
+      "last_name": "McGowan",
+      "short_code": "DMC",
+      "email": "dmcgowan@school.org.uk"
+    },
+    {
+      "id": 102,
+      "uuid": "arb-staff-0102",
+      "legacy_id": "TR_GR",
+      "first_name": "Gemma",
+      "last_name": "Robinson",
+      "short_code": "GRO",
+      "email": "grobinson@school.org.uk"
+    },
+    {
+      "id": 103,
+      "uuid": "arb-staff-0103",
+      "legacy_id": "TR_TB",
+      "first_name": "Thomas",
+      "last_name": "Bennett",
+      "short_code": "TBE",
+      "email": "tbennett@school.org.uk"
+    },
+    {
+      "id": 104,
+      "uuid": "arb-staff-0104",
+      "legacy_id": "TR_DB",
+      "first_name": "Dan",
+      "last_name": "Baldwin",
+      "short_code": "DBA",
+      "email": "dbaldwin@school.org.uk"
+    },
+    {
+      "id": 105,
+      "uuid": "arb-staff-0105",
+      "legacy_id": "TR_AG",
+      "first_name": "Alice",
+      "last_name": "Gunn",
+      "short_code": "AGU",
+      "email": "agunn@school.org.uk"
+    }
+  ],
+  "rooms": [
+    {
+      "id": 201,
+      "code": "RM_7B",
+      "name": "Room 7B",
+      "capacity": 30,
+      "location": "Main Building"
+    }
+  ],
+  "teaching_groups": [
+    {
+      "id": 301,
+      "code": "7A/En",
+      "untis_class": "CL_7A",
+      "subject_code": "SU_En",
+      "academic_year": "2025/2026"
+    },
+    {
+      "id": 302,
+      "code": "7A/Ma",
+      "untis_class": "CL_7A",
+      "subject_code": "SU_Ma",
+      "academic_year": "2025/2026"
+    },
+    {
+      "id": 303,
+      "code": "7A-7B/PE",
+      "untis_class": "CL_7A CL_7B",
+      "subject_code": "SU_PE",
+      "academic_year": "2025/2026"
+    }
+  ],
+  "timetable_slots": [
+    {
+      "id": 5001,
+      "teaching_group_id": 301,
+      "staff_id": 101,
+      "room_id": 201,
+      "day_of_week": 1,
+      "period_number": 1,
+      "start_time": "09:00",
+      "end_time": "10:00"
+    }
+  ]
+}

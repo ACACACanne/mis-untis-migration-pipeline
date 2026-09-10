@@ -1,0 +1,941 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document version="3.8" xsi:schemaLocation="https://untis.at/untis/XmlInterface https://www.untis.at/fileadmin/downloads/xsd/XmlInterface-3.8.xsd" date="20260907" time="164914" xmlns="https://untis.at/untis/XmlInterface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <general>
+    <schoolname>Untis 2027</schoolname>
+    <schooltype/>
+    <schoolyearbegindate>20250901</schoolyearbegindate>
+    <schoolyearenddate>20260731</schoolyearenddate>
+    <header1>Timetable 25/26</header1>
+    <header2/>
+    <footer>G r u b e r  &amp;  P e t t e r s  S o f t w a r e   Untis 2027 Demo 2</footer>
+    <termname>School year</termname>
+    <termbegindate>20250901</termbegindate>
+    <termenddate>20260731</termenddate>
+  </general>
+  <timeperiods>
+    <timeperiod id="TP_1">
+      <day>1</day>
+      <period>1</period>
+      <starttime>0900</starttime>
+      <endtime>1000</endtime>
+    </timeperiod>
+    <timeperiod id="TP_2">
+      <day>1</day>
+      <period>2</period>
+      <starttime>1000</starttime>
+      <endtime>1100</endtime>
+    </timeperiod>
+    <timeperiod id="TP_3">
+      <day>1</day>
+      <period>3</period>
+      <starttime>1120</starttime>
+      <endtime>1220</endtime>
+    </timeperiod>
+    <timeperiod id="TP_4">
+      <day>1</day>
+      <period>4</period>
+      <starttime>1220</starttime>
+      <endtime>1320</endtime>
+    </timeperiod>
+    <timeperiod id="TP_5">
+      <day>1</day>
+      <period>5</period>
+      <starttime>1400</starttime>
+      <endtime>1500</endtime>
+    </timeperiod>
+    <timeperiod id="TP_6">
+      <day>2</day>
+      <period>1</period>
+      <starttime>0900</starttime>
+      <endtime>1000</endtime>
+    </timeperiod>
+    <timeperiod id="TP_7">
+      <day>2</day>
+      <period>2</period>
+      <starttime>1000</starttime>
+      <endtime>1100</endtime>
+    </timeperiod>
+    <timeperiod id="TP_8">
+      <day>2</day>
+      <period>3</period>
+      <starttime>1120</starttime>
+      <endtime>1220</endtime>
+    </timeperiod>
+    <timeperiod id="TP_9">
+      <day>2</day>
+      <period>4</period>
+      <starttime>1220</starttime>
+      <endtime>1320</endtime>
+    </timeperiod>
+    <timeperiod id="TP_10">
+      <day>2</day>
+      <period>5</period>
+      <starttime>1400</starttime>
+      <endtime>1500</endtime>
+    </timeperiod>
+    <timeperiod id="TP_11">
+      <day>3</day>
+      <period>1</period>
+      <starttime>0900</starttime>
+      <endtime>1000</endtime>
+    </timeperiod>
+    <timeperiod id="TP_12">
+      <day>3</day>
+      <period>2</period>
+      <starttime>1000</starttime>
+      <endtime>1100</endtime>
+    </timeperiod>
+    <timeperiod id="TP_13">
+      <day>3</day>
+      <period>3</period>
+      <starttime>1120</starttime>
+      <endtime>1220</endtime>
+    </timeperiod>
+    <timeperiod id="TP_14">
+      <day>3</day>
+      <period>4</period>
+      <starttime>1220</starttime>
+      <endtime>1320</endtime>
+    </timeperiod>
+    <timeperiod id="TP_15">
+      <day>3</day>
+      <period>5</period>
+      <starttime>1400</starttime>
+      <endtime>1500</endtime>
+    </timeperiod>
+    <timeperiod id="TP_16">
+      <day>4</day>
+      <period>1</period>
+      <starttime>0900</starttime>
+      <endtime>1000</endtime>
+    </timeperiod>
+    <timeperiod id="TP_17">
+      <day>4</day>
+      <period>2</period>
+      <starttime>1000</starttime>
+      <endtime>1100</endtime>
+    </timeperiod>
+    <timeperiod id="TP_18">
+      <day>4</day>
+      <period>3</period>
+      <starttime>1120</starttime>
+      <endtime>1220</endtime>
+    </timeperiod>
+    <timeperiod id="TP_19">
+      <day>4</day>
+      <period>4</period>
+      <starttime>1220</starttime>
+      <endtime>1320</endtime>
+    </timeperiod>
+    <timeperiod id="TP_20">
+      <day>4</day>
+      <period>5</period>
+      <starttime>1400</starttime>
+      <endtime>1500</endtime>
+    </timeperiod>
+    <timeperiod id="TP_21">
+      <day>5</day>
+      <period>1</period>
+      <starttime>0900</starttime>
+      <endtime>1000</endtime>
+    </timeperiod>
+    <timeperiod id="TP_22">
+      <day>5</day>
+      <period>2</period>
+      <starttime>1000</starttime>
+      <endtime>1100</endtime>
+    </timeperiod>
+    <timeperiod id="TP_23">
+      <day>5</day>
+      <period>3</period>
+      <starttime>1120</starttime>
+      <endtime>1220</endtime>
+    </timeperiod>
+    <timeperiod id="TP_24">
+      <day>5</day>
+      <period>4</period>
+      <starttime>1220</starttime>
+      <endtime>1320</endtime>
+    </timeperiod>
+    <timeperiod id="TP_25">
+      <day>5</day>
+      <period>5</period>
+      <starttime>1400</starttime>
+      <endtime>1500</endtime>
+    </timeperiod>
+  </timeperiods>
+  <holidays/>
+  <descriptions/>
+  <departments/>
+  <rooms>
+    <room id="RM_7B"/>
+  </rooms>
+  <roomgroups/>
+  <subjects>
+    <subject id="SU_Ar">
+      <longname>Art</longname>
+      <forecolor>#000000</forecolor>
+      <backcolor>#617FB2</backcolor>
+    </subject>
+    <subject id="SU_DT">
+      <longname>Design &amp; Tech</longname>
+      <forecolor>#000000</forecolor>
+      <backcolor>#CCD6E6</backcolor>
+    </subject>
+    <subject id="SU_Dr">
+      <longname>Drama</longname>
+      <forecolor>#000000</forecolor>
+      <backcolor>#7EC1FF</backcolor>
+    </subject>
+    <subject id="SU_En">
+      <longname>English</longname>
+      <forecolor>#000000</forecolor>
+      <backcolor>#4DA9FF</backcolor>
+    </subject>
+    <subject id="SU_Fr">
+      <longname>French</longname>
+      <forecolor>#1200FF</forecolor>
+      <backcolor>#F8D4F1</backcolor>
+    </subject>
+    <subject id="SU_Gy">
+      <longname>Geography</longname>
+      <forecolor>#000000</forecolor>
+      <backcolor>#D89F4B</backcolor>
+    </subject>
+    <subject id="SU_Hi">
+      <longname>History</longname>
+      <forecolor>#000000</forecolor>
+      <backcolor>#EDE9BE</backcolor>
+    </subject>
+    <subject id="SU_Ma">
+      <longname>Maths</longname>
+      <forecolor>#000000</forecolor>
+      <backcolor>#E47B83</backcolor>
+    </subject>
+    <subject id="SU_Mu">
+      <longname>Music</longname>
+      <forecolor>#000000</forecolor>
+      <backcolor>#7E7467</backcolor>
+    </subject>
+    <subject id="SU_NCC">
+      <longname>NCC</longname>
+    </subject>
+    <subject id="SU_PE">
+      <longname>Physical Education</longname>
+      <forecolor>#000000</forecolor>
+      <backcolor>#8787FF</backcolor>
+    </subject>
+    <subject id="SU_PS">
+      <longname>Personal and Social</longname>
+      <forecolor>#000000</forecolor>
+      <backcolor>#AA81F7</backcolor>
+    </subject>
+    <subject id="SU_RS">
+      <longname>Religious Studies</longname>
+      <forecolor>#000000</forecolor>
+      <backcolor>#EB7AD4</backcolor>
+    </subject>
+    <subject id="SU_Sc">
+      <longname>Science</longname>
+      <forecolor>#000000</forecolor>
+      <backcolor>#8CC936</backcolor>
+    </subject>
+  </subjects>
+  <teachers>
+    <teacher id="TR_AG">
+      <surname>Gunn</surname>
+    </teacher>
+    <teacher id="TR_DB">
+      <surname>Baldwin</surname>
+    </teacher>
+    <teacher id="TR_DM">
+      <surname>McGowan</surname>
+    </teacher>
+    <teacher id="TR_EB">
+      <surname>Brunet</surname>
+    </teacher>
+    <teacher id="TR_GR">
+      <surname>Robinson</surname>
+    </teacher>
+    <teacher id="TR_HB">
+      <surname>Bodman</surname>
+    </teacher>
+    <teacher id="TR_HK">
+      <surname>Kenward</surname>
+    </teacher>
+    <teacher id="TR_MH">
+      <surname>Holbeche</surname>
+    </teacher>
+    <teacher id="TR_MP">
+      <surname>Phillips</surname>
+    </teacher>
+    <teacher id="TR_NN">
+      <surname>Norton</surname>
+    </teacher>
+    <teacher id="TR_SG">
+      <surname>Gough</surname>
+    </teacher>
+    <teacher id="TR_TB">
+      <surname>Bennett</surname>
+    </teacher>
+  </teachers>
+  <classes>
+    <class id="CL_10"/>
+    <class id="CL_7A"/>
+    <class id="CL_7B"/>
+  </classes>
+  <students>
+    <student id="ST_Barbara Baldwin">
+      <forename>Barbara</forename>
+      <surname>Baldwin</surname>
+      <gender>F</gender>
+      <birthdate>20120606</birthdate>
+      <idnumber>H801200001001</idnumber>
+      <student_class id="CL_10"/>
+    </student>
+    <student id="ST_Betty Baldwin">
+      <forename>Betty</forename>
+      <surname>Baldwin</surname>
+      <gender>F</gender>
+      <student_class id="CL_10"/>
+    </student>
+    <student id="ST_Billy Baldwin">
+      <forename>Billy</forename>
+      <surname>Baldwin</surname>
+      <gender>M</gender>
+      <student_class id="CL_10"/>
+    </student>
+    <student id="ST_Bobby Baldwin">
+      <forename>Bobby</forename>
+      <surname>Baldwin</surname>
+      <gender>M</gender>
+      <student_class id="CL_10"/>
+    </student>
+    <student id="ST_Xavier Xho">
+      <forename>X</forename>
+      <surname>X</surname>
+      <gender>F</gender>
+      <student_class id="CL_10"/>
+    </student>
+    <student id="ST_Zeke Zane">
+      <forename>Zeke</forename>
+      <surname>Zane</surname>
+      <gender>M</gender>
+      <student_class id="CL_10"/>
+    </student>
+  </students>
+  <studentgroups>
+    <studentgroup id="SG_Ar_10">
+      <subject id="SU_Ar"/>
+      <classes>
+        <class id="CL_10"/>
+      </classes>
+    </studentgroup>
+    <studentgroup id="SG_Dr_10">
+      <subject id="SU_Dr"/>
+      <classes>
+        <class id="CL_10"/>
+      </classes>
+    </studentgroup>
+    <studentgroup id="SG_En_10">
+      <subject id="SU_En"/>
+      <classes>
+        <class id="CL_10"/>
+      </classes>
+    </studentgroup>
+    <studentgroup id="SG_Fr_10">
+      <subject id="SU_Fr"/>
+      <classes>
+        <class id="CL_10"/>
+      </classes>
+    </studentgroup>
+    <studentgroup id="SG_Hi_10">
+      <subject id="SU_Hi"/>
+      <classes>
+        <class id="CL_10"/>
+      </classes>
+    </studentgroup>
+    <studentgroup id="SG_Ma_10">
+      <subject id="SU_Ma"/>
+      <classes>
+        <class id="CL_10"/>
+      </classes>
+    </studentgroup>
+    <studentgroup id="SG_Mu_10">
+      <subject id="SU_Mu"/>
+      <classes>
+        <class id="CL_10"/>
+      </classes>
+    </studentgroup>
+    <studentgroup id="SG_PE_7B">
+      <subject id="SU_PE"/>
+      <classes>
+        <class id="CL_7A"/>
+        <class id="CL_7B"/>
+      </classes>
+    </studentgroup>
+    <studentgroup id="SG_PE_7A7B_1">
+      <subject id="SU_PE"/>
+      <classes>
+        <class id="CL_7A"/>
+        <class id="CL_7B"/>
+      </classes>
+    </studentgroup>
+    <studentgroup id="SG_PE_7A7B_2">
+      <subject id="SU_PE"/>
+      <classes>
+        <class id="CL_7A"/>
+        <class id="CL_7B"/>
+      </classes>
+    </studentgroup>
+    <studentgroup id="SG_PE_7A_7B">
+      <subject id="SU_PE"/>
+      <classes>
+        <class id="CL_7A"/>
+        <class id="CL_7B"/>
+      </classes>
+    </studentgroup>
+  </studentgroups>
+  <lesson_date_schemes>
+    <lesson_date_scheme id="UG_.">
+      <date_scheme>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</date_scheme>
+      <periodic_weeks/>
+    </lesson_date_scheme>
+  </lesson_date_schemes>
+  <lessons>
+    <lesson id="LS_100">
+      <periods>3</periods>
+      <lesson_subject id="SU_En"/>
+      <lesson_teacher id="TR_DM"/>
+      <lesson_classes id="CL_7A"/>
+      <teacher_value>300000</teacher_value>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>1</assigned_day>
+          <assigned_period>1</assigned_period>
+          <assigned_starttime>0900</assigned_starttime>
+          <assigned_endtime>1000</assigned_endtime>
+        </time>
+        <time>
+          <assigned_day>3</assigned_day>
+          <assigned_period>4</assigned_period>
+          <assigned_starttime>1220</assigned_starttime>
+          <assigned_endtime>1320</assigned_endtime>
+        </time>
+        <time>
+          <assigned_day>4</assigned_day>
+          <assigned_period>5</assigned_period>
+          <assigned_starttime>1400</assigned_starttime>
+          <assigned_endtime>1500</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+    <lesson id="LS_200">
+      <periods>3</periods>
+      <lesson_subject id="SU_Ma"/>
+      <lesson_teacher id="TR_GR"/>
+      <lesson_classes id="CL_7A"/>
+      <teacher_value>300000</teacher_value>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>2</assigned_day>
+          <assigned_period>2</assigned_period>
+          <assigned_starttime>1000</assigned_starttime>
+          <assigned_endtime>1100</assigned_endtime>
+        </time>
+        <time>
+          <assigned_day>3</assigned_day>
+          <assigned_period>1</assigned_period>
+          <assigned_starttime>0900</assigned_starttime>
+          <assigned_endtime>1000</assigned_endtime>
+        </time>
+        <time>
+          <assigned_day>5</assigned_day>
+          <assigned_period>5</assigned_period>
+          <assigned_starttime>1400</assigned_starttime>
+          <assigned_endtime>1500</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+    <lesson id="LS_400">
+      <periods>2</periods>
+      <lesson_subject id="SU_Gy"/>
+      <lesson_teacher id="TR_SG"/>
+      <lesson_classes id="CL_7A"/>
+      <teacher_value>200000</teacher_value>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>3</assigned_day>
+          <assigned_period>2</assigned_period>
+          <assigned_starttime>1000</assigned_starttime>
+          <assigned_endtime>1100</assigned_endtime>
+        </time>
+        <time>
+          <assigned_day>5</assigned_day>
+          <assigned_period>4</assigned_period>
+          <assigned_starttime>1220</assigned_starttime>
+          <assigned_endtime>1320</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+    <lesson id="LS_500">
+      <periods>2</periods>
+      <lesson_subject id="SU_Hi"/>
+      <lesson_teacher id="TR_TB"/>
+      <lesson_classes id="CL_7A"/>
+      <teacher_value>200000</teacher_value>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>2</assigned_day>
+          <assigned_period>3</assigned_period>
+          <assigned_starttime>1120</assigned_starttime>
+          <assigned_endtime>1220</assigned_endtime>
+        </time>
+        <time>
+          <assigned_day>5</assigned_day>
+          <assigned_period>1</assigned_period>
+          <assigned_starttime>0900</assigned_starttime>
+          <assigned_endtime>1000</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+    <lesson id="LS_600">
+      <periods>2</periods>
+      <lesson_subject id="SU_DT"/>
+      <lesson_teacher id="TR_MP"/>
+      <lesson_classes id="CL_7A"/>
+      <teacher_value>200000</teacher_value>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>1</assigned_day>
+          <assigned_period>5</assigned_period>
+          <assigned_starttime>1400</assigned_starttime>
+          <assigned_endtime>1500</assigned_endtime>
+        </time>
+        <time>
+          <assigned_day>4</assigned_day>
+          <assigned_period>2</assigned_period>
+          <assigned_starttime>1000</assigned_starttime>
+          <assigned_endtime>1100</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+    <lesson id="LS_800">
+      <periods>3</periods>
+      <lesson_subject id="SU_Fr"/>
+      <lesson_teacher id="TR_AG"/>
+      <lesson_classes id="CL_7A"/>
+      <teacher_value>300000</teacher_value>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>1</assigned_day>
+          <assigned_period>4</assigned_period>
+          <assigned_starttime>1220</assigned_starttime>
+          <assigned_endtime>1320</assigned_endtime>
+        </time>
+        <time>
+          <assigned_day>2</assigned_day>
+          <assigned_period>5</assigned_period>
+          <assigned_starttime>1400</assigned_starttime>
+          <assigned_endtime>1500</assigned_endtime>
+        </time>
+        <time>
+          <assigned_day>4</assigned_day>
+          <assigned_period>3</assigned_period>
+          <assigned_starttime>1120</assigned_starttime>
+          <assigned_endtime>1220</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+    <lesson id="LS_900">
+      <periods>1</periods>
+      <lesson_subject id="SU_Ar"/>
+      <lesson_teacher id="TR_MH"/>
+      <lesson_classes id="CL_7A"/>
+      <teacher_value>100000</teacher_value>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>4</assigned_day>
+          <assigned_period>4</assigned_period>
+          <assigned_starttime>1220</assigned_starttime>
+          <assigned_endtime>1320</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+    <lesson id="LS_1000">
+      <periods>1</periods>
+      <lesson_subject id="SU_Mu"/>
+      <lesson_teacher id="TR_NN"/>
+      <lesson_classes id="CL_7A"/>
+      <teacher_value>100000</teacher_value>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>1</assigned_day>
+          <assigned_period>2</assigned_period>
+          <assigned_starttime>1000</assigned_starttime>
+          <assigned_endtime>1100</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+    <lesson id="LS_1100">
+      <periods>1</periods>
+      <lesson_subject id="SU_PS"/>
+      <lesson_teacher id="TR_HB"/>
+      <lesson_classes id="CL_7A"/>
+      <teacher_value>100000</teacher_value>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>4</assigned_day>
+          <assigned_period>1</assigned_period>
+          <assigned_starttime>0900</assigned_starttime>
+          <assigned_endtime>1000</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+    <lesson id="LS_1200">
+      <periods>1</periods>
+      <lesson_subject id="SU_RS"/>
+      <lesson_teacher id="TR_SG"/>
+      <lesson_classes id="CL_7A"/>
+      <teacher_value>100000</teacher_value>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>3</assigned_day>
+          <assigned_period>3</assigned_period>
+          <assigned_starttime>1120</assigned_starttime>
+          <assigned_endtime>1220</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+    <lesson id="LS_1300">
+      <periods>1</periods>
+      <lesson_subject id="SU_Dr"/>
+      <lesson_teacher id="TR_DM"/>
+      <lesson_classes id="CL_7A"/>
+      <teacher_value>100000</teacher_value>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>1</assigned_day>
+          <assigned_period>3</assigned_period>
+          <assigned_starttime>1120</assigned_starttime>
+          <assigned_endtime>1220</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+    <lesson id="LS_1500">
+      <periods>3</periods>
+      <lesson_subject id="SU_En"/>
+      <lesson_teacher id="TR_DM"/>
+      <lesson_classes id="CL_7B"/>
+      <teacher_value>300000</teacher_value>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>1</assigned_day>
+          <assigned_period>5</assigned_period>
+          <assigned_starttime>1400</assigned_starttime>
+          <assigned_endtime>1500</assigned_endtime>
+        </time>
+        <time>
+          <assigned_day>3</assigned_day>
+          <assigned_period>3</assigned_period>
+          <assigned_starttime>1120</assigned_starttime>
+          <assigned_endtime>1220</assigned_endtime>
+        </time>
+        <time>
+          <assigned_day>4</assigned_day>
+          <assigned_period>3</assigned_period>
+          <assigned_starttime>1120</assigned_starttime>
+          <assigned_endtime>1220</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+    <lesson id="LS_1700">
+      <periods>3</periods>
+      <lesson_subject id="SU_Ma"/>
+      <lesson_teacher id="TR_GR"/>
+      <lesson_classes id="CL_7B"/>
+      <teacher_value>300000</teacher_value>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>4</assigned_day>
+          <assigned_period>2</assigned_period>
+          <assigned_starttime>1000</assigned_starttime>
+          <assigned_endtime>1100</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+    <lesson id="LS_4000">
+      <periods>2</periods>
+      <lesson_subject id="SU_PE"/>
+      <lesson_teacher id="TR_TB"/>
+      <lesson_classes id="CL_7A CL_7B"/>
+      <teacher_value>200000</teacher_value>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>5</assigned_day>
+          <assigned_period>3</assigned_period>
+          <assigned_starttime>1120</assigned_starttime>
+          <assigned_endtime>1220</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+    <lesson id="LS_4001">
+      <periods>2</periods>
+      <lesson_subject id="SU_PE"/>
+      <lesson_teacher id="TR_DB"/>
+      <lesson_classes id="CL_7A CL_7B"/>
+      <teacher_value>200000</teacher_value>
+      <lesson_studentgroups id="SG_PE_7A_7B"/>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>5</assigned_day>
+          <assigned_period>3</assigned_period>
+          <assigned_starttime>1120</assigned_starttime>
+          <assigned_endtime>1220</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+    <lesson id="LS_4100">
+      <periods>1</periods>
+      <lesson_subject id="SU_Ar"/>
+      <lesson_classes id="CL_10"/>
+      <teacher_value>100000</teacher_value>
+      <lesson_studentgroups id="SG_Ar_10"/>
+      <lesson_students id="ST_Barbara Baldwin ST_Betty Baldwin"/>
+      <min_students>1</min_students>
+      <max_students>3</max_students>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>1</assigned_day>
+          <assigned_period>4</assigned_period>
+          <assigned_starttime>1220</assigned_starttime>
+          <assigned_endtime>1320</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+    <lesson id="LS_4200">
+      <periods>1</periods>
+      <lesson_subject id="SU_Dr"/>
+      <lesson_classes id="CL_10"/>
+      <teacher_value>100000</teacher_value>
+      <lesson_studentgroups id="SG_Dr_10"/>
+      <lesson_students id="ST_Billy Baldwin ST_Bobby Baldwin"/>
+      <min_students>1</min_students>
+      <max_students>3</max_students>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>1</assigned_day>
+          <assigned_period>4</assigned_period>
+          <assigned_starttime>1220</assigned_starttime>
+          <assigned_endtime>1320</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+    <lesson id="LS_4300">
+      <periods>1</periods>
+      <lesson_subject id="SU_Fr"/>
+      <lesson_classes id="CL_10"/>
+      <teacher_value>100000</teacher_value>
+      <lesson_studentgroups id="SG_Fr_10"/>
+      <lesson_students id="ST_Barbara Baldwin ST_Betty Baldwin ST_Zeke Zane"/>
+      <min_students>1</min_students>
+      <max_students>3</max_students>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>2</assigned_day>
+          <assigned_period>4</assigned_period>
+          <assigned_starttime>1220</assigned_starttime>
+          <assigned_endtime>1320</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+    <lesson id="LS_4400">
+      <periods>1</periods>
+      <lesson_subject id="SU_Mu"/>
+      <lesson_classes id="CL_10"/>
+      <teacher_value>100000</teacher_value>
+      <lesson_studentgroups id="SG_Mu_10"/>
+      <lesson_students id="ST_Billy Baldwin ST_Bobby Baldwin"/>
+      <min_students>1</min_students>
+      <max_students>3</max_students>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>2</assigned_day>
+          <assigned_period>4</assigned_period>
+          <assigned_starttime>1220</assigned_starttime>
+          <assigned_endtime>1320</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+    <lesson id="LS_4500">
+      <periods>1</periods>
+      <lesson_subject id="SU_Ma"/>
+      <lesson_classes id="CL_10"/>
+      <teacher_value>100000</teacher_value>
+      <lesson_studentgroups id="SG_Ma_10"/>
+      <lesson_students id=" "/>
+      <min_students>1</min_students>
+      <max_students>3</max_students>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>3</assigned_day>
+          <assigned_period>2</assigned_period>
+          <assigned_starttime>1000</assigned_starttime>
+          <assigned_endtime>1100</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+    <lesson id="LS_4600">
+      <periods>1</periods>
+      <lesson_subject id="SU_En"/>
+      <lesson_classes id="CL_10"/>
+      <teacher_value>100000</teacher_value>
+      <lesson_studentgroups id="SG_En_10"/>
+      <lesson_students id=" "/>
+      <min_students>1</min_students>
+      <max_students>3</max_students>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>5</assigned_day>
+          <assigned_period>3</assigned_period>
+          <assigned_starttime>1120</assigned_starttime>
+          <assigned_endtime>1220</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+    <lesson id="LS_4700">
+      <periods>1</periods>
+      <lesson_subject id="SU_Hi"/>
+      <lesson_classes id="CL_10"/>
+      <teacher_value>100000</teacher_value>
+      <lesson_studentgroups id="SG_Hi_10"/>
+      <lesson_students id="ST_Zeke Zane"/>
+      <min_students>1</min_students>
+      <max_students>3</max_students>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>1</assigned_day>
+          <assigned_period>4</assigned_period>
+          <assigned_starttime>1220</assigned_starttime>
+          <assigned_endtime>1320</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+    <lesson id="LS_4800">
+      <periods>1</periods>
+      <lesson_subject id="SU_NCC"/>
+      <lesson_teacher id="TR_DB"/>
+      <teacher_value>100000</teacher_value>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>5</assigned_day>
+          <assigned_period>2</assigned_period>
+          <assigned_starttime>1000</assigned_starttime>
+          <assigned_endtime>1100</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+    <lesson id="LS_4900">
+      <periods>3</periods>
+      <lesson_subject id="SU_Sc"/>
+      <lesson_teacher id="TR_EB"/>
+      <lesson_classes id="CL_7A"/>
+      <teacher_value>300000</teacher_value>
+      <effectivebegindate>20250901</effectivebegindate>
+      <effectiveenddate>20260731</effectiveenddate>
+      <occurence>11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111FF11111</occurence>
+      <times>
+        <time>
+          <assigned_day>2</assigned_day>
+          <assigned_period>4</assigned_period>
+          <assigned_starttime>1220</assigned_starttime>
+          <assigned_endtime>1320</assigned_endtime>
+        </time>
+        <time>
+          <assigned_day>3</assigned_day>
+          <assigned_period>5</assigned_period>
+          <assigned_starttime>1400</assigned_starttime>
+          <assigned_endtime>1500</assigned_endtime>
+        </time>
+        <time>
+          <assigned_day>5</assigned_day>
+          <assigned_period>2</assigned_period>
+          <assigned_starttime>1000</assigned_starttime>
+          <assigned_endtime>1100</assigned_endtime>
+        </time>
+      </times>
+    </lesson>
+  </lessons>
+  <reductions/>
+  <reduction_reasons/>
+  <lesson_tables/>
+</document>
