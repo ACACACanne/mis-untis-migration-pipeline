@@ -1,6 +1,13 @@
+# Environment & secret credentials
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[codz]
+*.py[cod]
 *$py.class
 
 # C extensions
@@ -216,3 +223,66 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# testing & coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+nosetests.xml
+coverage.xml
+*.cover
+
+# Database & SQLite files
+*.sqlite3
+*.sqlite3-journal
+*.db
+
+# ==============================================================================
+# Node.js & Frontend Artifacts (Vite / React)
+# ==============================================================================
+node_modules/
+frontend/node_modules/
+frontend/dist/
+dist/
+.vite/
+frontend/.vite/
+
+# NPM & Yarn Debug Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ==============================================================================
+# Runtime Storage & File Uploads (Untis XML and DIF generated files)
+# ==============================================================================
+uploads/
+backend/uploads/
+*.dif
+*.txt
+!backend/requirements.txt
+
+# Local Docker volumes
+pgdata/
+
+# ==============================================================================
+# Operating System & IDE Configurations
+# ==============================================================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+.history/
+*.swp
+*.swo
+
+# ==============================================================================
+# Rule Exceptions (Ensure critical baseline examples remain in Git)
+# ==============================================================================
+!.env.example
+!backend/.env.example
