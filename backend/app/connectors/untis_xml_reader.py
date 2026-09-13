@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Union
+from typing import List, Optional, Union
 import xml.etree.ElementTree as ET
 
 from app.schemas.untis_xml import (
@@ -30,16 +30,74 @@ class UntisXmlReader:
         else:
             raise ValueError("Unsupported XML source type. Provide bytes, str, or Path.")
 
-    def _get_text(self, elem: ET.Element, path: str, default: str = "") -> str:
-        found = elem.find(f"u:{path}", NAMESPACE)
-        if found is None:
-            found = elem.find(path)
-        return found.text.strip() if (found is not None and found.text) else default
+    def _find_child(self, elem: ET.Element, tag_name: str) -> Optional[ET.Element]:
+        """Safely locates an immediate child element matching namespaced or plain tags."""
+        found = elem.find(f"u:{tag_name}", NAMESPACE)
+        if found is not None:
+            return found
 
-    def _find_all(self, elem: ET.Element, tag_name: str) -> list[ET.Element]:
+        found = elem.find(tag_name)
+        if found is not None:
+            return found
+
+        target = tag_name.lower().replace("_", "")
+        for child in elem:
+            local_tag = child.tag.split("}")[-1].lower().replace("_", "")
+            if local_tag == target:
+                return child
+
+        return None
+
+    def _find_first_child(self, elem: ET.Element, candidate_tags: List[str]) -> Optional[ET.Element]:
+        """Iterates candidate tag names and returns the first matching element."""
+        for tag in candidate_tags:
+            child = self._find_child(elem, tag)
+            if child is not None:
+                return child
+        return None
+
+    def _get_text(self, elem: ET.Element, tag_name: str, default: str = "") -> str:
+        child = self._find_child(elem, tag_name)
+        if child is not None and child.text and child.text.strip():
+            return child.text.strip()
+        return default
+
+    def _get_element_value(
+        self, elem: ET.Element, candidate_names: List[str], default: str = ""
+    ) -> str:
+        """
+        Extracts value by prioritizing child element text, then child attributes,
+        and finally element-level attributes.
+        """
+        # 1. Child elements (<longname>English</longname>)
+        for name in candidate_names:
+            child = self._find_child(elem, name)
+            if child is not None:
+                if child.text and child.text.strip():
+                    return child.text.strip()
+                for attr_key in ("value", "name", "color", "val"):
+                    if attr_key in child.attrib and child.attrib[attr_key].strip():
+                        return child.attrib[attr_key].strip()
+
+        # 2. Element attributes (<subject longname="English" ...>)
+        for name in candidate_names:
+            if name in elem.attrib and elem.attrib[name].strip():
+                return elem.attrib[name].strip()
+            target = name.lower().replace("_", "")
+            for k, v in elem.attrib.items():
+                if k.lower().replace("_", "") == target and v.strip():
+                    return v.strip()
+
+        return default
+
+    def _find_all(self, elem: ET.Element, tag_name: str) -> List[ET.Element]:
         found = elem.findall(f".//u:{tag_name}", NAMESPACE)
         if not found:
             found = elem.findall(f".//{tag_name}")
+        if not found:
+            found = [
+                child for child in elem if child.tag.split("}")[-1].lower() == tag_name.lower()
+            ]
         return found
 
     def parse(self) -> UntisParsedDataset:
@@ -55,10 +113,7 @@ class UntisXmlReader:
         )
 
     def _parse_general(self) -> UntisGeneralInfo:
-        gen_elem = self.root.find("u:general", NAMESPACE)
-        if gen_elem is None:
-            gen_elem = self.root.find("general")
-
+        gen_elem = self._find_first_child(self.root, ["general"])
         if gen_elem is None:
             return UntisGeneralInfo(
                 school_name="Untis Schedule",
@@ -75,9 +130,12 @@ class UntisXmlReader:
             term_end=self._get_text(gen_elem, "termenddate") or None,
         )
 
-    def _parse_timeperiods(self) -> list[UntisTimePeriod]:
+    def _parse_timeperiods(self) -> List[UntisTimePeriod]:
         periods = []
-        for tp in self._find_all(self.root, "timeperiod"):
+        container = self._find_first_child(self.root, ["timeperiods"])
+        search_root = container if container is not None else self.root
+
+        for tp in self._find_all(search_root, "timeperiod"):
             periods.append(
                 UntisTimePeriod(
                     id=tp.attrib.get("id", ""),
@@ -89,9 +147,12 @@ class UntisXmlReader:
             )
         return periods
 
-    def _parse_teachers(self) -> list[UntisTeacher]:
+    def _parse_teachers(self) -> List[UntisTeacher]:
         teachers = []
-        for t in self._find_all(self.root, "teacher"):
+        container = self._find_first_child(self.root, ["teachers"])
+        search_root = container if container is not None else self.root
+
+        for t in self._find_all(search_root, "teacher"):
             teachers.append(
                 UntisTeacher(
                     id=t.attrib.get("id", ""),
@@ -102,48 +163,92 @@ class UntisXmlReader:
             )
         return teachers
 
-    def _parse_subjects(self) -> list[UntisSubject]:
+    def _parse_subjects(self) -> List[UntisSubject]:
         subjects = []
-        for s in self._find_all(self.root, "subject"):
+        container = self._find_first_child(self.root, ["subjects"])
+        search_root = container if container is not None else self.root
+
+        for s in self._find_all(search_root, "subject"):
+            s_id = s.attrib.get("id", "")
+            if not s_id:
+                continue
+
+            long_name = self._get_element_value(
+                s, ["longname", "long_name", "description"], default=""
+            )
+            if not long_name:
+                long_name = s.attrib.get("name") or s_id
+
+            forecolor = self._get_element_value(
+                s, ["forecolor", "fore_color", "textcolor", "text_color"], default="#000000"
+            )
+            if forecolor and not forecolor.startswith("#") and len(forecolor) == 6:
+                forecolor = f"#{forecolor}"
+
+            backcolor = self._get_element_value(
+                s, ["backcolor", "back_color", "bgcolor", "bg_color"], default="#FFFFFF"
+            )
+            if backcolor and not backcolor.startswith("#") and len(backcolor) == 6:
+                backcolor = f"#{backcolor}"
+
             subjects.append(
                 UntisSubject(
-                    id=s.attrib.get("id", ""),
-                    long_name=self._get_text(s, "longname", s.attrib.get("id", "")),
-                    forecolor=self._get_text(s, "forecolor", "#000000"),
-                    backcolor=self._get_text(s, "backcolor", "#FFFFFF"),
+                    id=s_id,
+                    long_name=long_name,
+                    forecolor=forecolor,
+                    backcolor=backcolor,
                 )
             )
         return subjects
 
-    def _parse_rooms(self) -> list[UntisRoom]:
+    def _parse_rooms(self) -> List[UntisRoom]:
         rooms = []
-        for r in self._find_all(self.root, "room"):
+        container = self._find_first_child(self.root, ["rooms"])
+        search_root = container if container is not None else self.root
+
+        for r in self._find_all(search_root, "room"):
+            long_name_elem = self._find_first_child(r, ["longname", "long_name", "name"])
+            long_name = (
+                long_name_elem.text.strip()
+                if (long_name_elem is not None and long_name_elem.text)
+                else None
+            )
             rooms.append(
                 UntisRoom(
                     id=r.attrib.get("id", ""),
-                    long_name=self._get_text(r, "longname") or None,
+                    long_name=long_name,
                 )
             )
         return rooms
 
-    def _parse_classes(self) -> list[UntisClass]:
+    def _parse_classes(self) -> List[UntisClass]:
         classes = []
-        for c in self._find_all(self.root, "class"):
+        container = self._find_first_child(self.root, ["classes"])
+        search_root = container if container is not None else self.root
+
+        for c in self._find_all(search_root, "class"):
+            long_name_elem = self._find_first_child(c, ["longname", "long_name", "name"])
+            long_name = (
+                long_name_elem.text.strip()
+                if (long_name_elem is not None and long_name_elem.text)
+                else None
+            )
             classes.append(
                 UntisClass(
                     id=c.attrib.get("id", ""),
-                    long_name=self._get_text(c, "longname") or None,
+                    long_name=long_name,
                 )
             )
         return classes
 
-    def _parse_students(self) -> list[UntisStudent]:
+    def _parse_students(self) -> List[UntisStudent]:
         students = []
-        for s in self._find_all(self.root, "student"):
+        container = self._find_first_child(self.root, ["students"])
+        search_root = container if container is not None else self.root
+
+        for s in self._find_all(search_root, "student"):
             s_id = s.attrib.get("id", "")
-            class_elem = s.find("u:student_class", NAMESPACE)
-            if class_elem is None:
-                class_elem = s.find("student_class")
+            class_elem = self._find_first_child(s, ["student_class", "class"])
             base_class = class_elem.attrib.get("id") if class_elem is not None else None
 
             students.append(
@@ -158,26 +263,28 @@ class UntisXmlReader:
             )
         return students
 
-    def _parse_lessons(self) -> list[UntisLesson]:
+    def _parse_lessons(self) -> List[UntisLesson]:
         lessons = []
-        for l in self._find_all(self.root, "lesson"):
+        container = self._find_first_child(self.root, ["lessons"])
+        search_root = container if container is not None else self.root
+
+        for l in self._find_all(search_root, "lesson"):
             l_id = l.attrib.get("id", "")
             periods = int(self._get_text(l, "periods", "1"))
 
-            sub_elem = l.find("u:lesson_subject", NAMESPACE) or l.find("lesson_subject")
+            sub_elem = self._find_first_child(l, ["lesson_subject", "subject"])
             subject_id = sub_elem.attrib.get("id") if sub_elem is not None else None
 
-            tea_elem = l.find("u:lesson_teacher", NAMESPACE) or l.find("lesson_teacher")
+            tea_elem = self._find_first_child(l, ["lesson_teacher", "teacher"])
             teacher_id = tea_elem.attrib.get("id") if tea_elem is not None else None
 
-            cls_elem = l.find("u:lesson_classes", NAMESPACE) or l.find("lesson_classes")
+            cls_elem = self._find_first_child(l, ["lesson_classes", "classes"])
             class_ids = cls_elem.attrib.get("id", "").split() if cls_elem is not None else []
 
-            sg_elem = l.find("u:lesson_studentgroups", NAMESPACE) or l.find("lesson_studentgroups")
+            sg_elem = self._find_first_child(l, ["lesson_studentgroups", "studentgroups"])
             studentgroup_id = sg_elem.attrib.get("id") if sg_elem is not None else None
 
-            # Student allocations
-            st_elem = l.find("u:lesson_students", NAMESPACE) or l.find("lesson_students")
+            st_elem = self._find_first_child(l, ["lesson_students", "students"])
             raw_students = st_elem.attrib.get("id", "").strip() if st_elem is not None else ""
             assigned_students = []
             if raw_students:
@@ -186,7 +293,11 @@ class UntisXmlReader:
                 ]
 
             times = []
-            for tm in (l.findall(".//u:time", NAMESPACE) or l.findall(".//time")):
+            time_elements = l.findall(".//u:time", NAMESPACE)
+            if not time_elements:
+                time_elements = l.findall(".//time")
+
+            for tm in time_elements:
                 day_val = self._get_text(tm, "assigned_day")
                 period_val = self._get_text(tm, "assigned_period")
                 if day_val and period_val:

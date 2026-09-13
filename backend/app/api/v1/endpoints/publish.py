@@ -13,7 +13,7 @@ router = APIRouter()
 
 @router.post("", response_model=Dict[str, Any])
 async def execute_publish(
-    target_mis: str = Query("ARBOR", regex="^(ARBOR|BROMCOM)$"),
+    target_mis: str = Query("ARBOR", pattern="^(ARBOR|BROMCOM)$"),
     db: Session = Depends(get_db),
 ) -> Dict[str, Any]:
     staged_diffs = (
