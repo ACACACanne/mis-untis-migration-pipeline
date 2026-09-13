@@ -11,7 +11,7 @@ router = APIRouter()
 
 @router.get("", response_model=List[Dict[str, Any]])
 def get_staged_diffs(
-    target_mis: str = Query("ARBOR", regex="^(ARBOR|BROMCOM)$"),
+    target_mis: str = Query("ARBOR", pattern="^(ARBOR|BROMCOM)$"),
     status: str = Query("STAGED"),
     db: Session = Depends(get_db),
 ) -> List[Dict[str, Any]]:
@@ -41,7 +41,7 @@ def get_staged_diffs(
 
 @router.post("/dry-run", response_model=Dict[str, Any])
 def run_dry_run_simulation(
-    target_mis: str = Query("ARBOR", regex="^(ARBOR|BROMCOM)$"),
+    target_mis: str = Query("ARBOR", pattern="^(ARBOR|BROMCOM)$"),
     db: Session = Depends(get_db),
 ) -> Dict[str, Any]:
     diffs = (

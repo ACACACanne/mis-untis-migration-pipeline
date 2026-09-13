@@ -16,7 +16,7 @@ router = APIRouter()
 
 @router.get("", response_model=List[QuarantineItemResponse])
 def list_quarantine_items(
-    status_filter: Optional[str] = Query(None, regex="^(PENDING|RESOLVED|IGNORED)$"),
+    status_filter: Optional[str] = Query(None, pattern="^(PENDING|RESOLVED|IGNORED)$"),
     db: Session = Depends(get_db),
 ) -> List[QuarantineItem]:
     query = db.query(QuarantineItem)
