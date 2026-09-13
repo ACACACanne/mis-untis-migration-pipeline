@@ -4,52 +4,52 @@ import React, { useState, useEffect } from "react";
 import {
   Layers,
   ShieldAlert,
-  PlusCircle,
-  RefreshCw,
   Clock,
   FileCheck2,
+  RefreshCw,
 } from "lucide-react";
 
 import Header from "./components/layout/Header";
 import ModeSwitch from "./components/layout/ModeSwitch";
 import MetricCard from "./components/layout/MetricCard";
 import XmlUploadZone from "./components/untis_deploy/XmlUploadZone";
-import TimetableDiffGrid from "./components/untis_deploy/TimetableDiffGrid";
-import OptionGroupViewer from "./components/untis_deploy/OptionGroupViewer";
 import PreFlightRunner from "./components/untis_deploy/PreFlightRunner";
+import OptionGroupViewer from "./components/untis_deploy/OptionGroupViewer";
+import TimetableDiffGrid from "./components/untis_deploy/TimetableDiffGrid";
 import QuarantineDesk from "./components/quarantine/QuarantineDesk";
-import MisMasterPull from "./components/reverse_sync/MisMasterPull";
-import DifExportAction from "./components/reverse_sync/DifExportAction";
+import MisExtractionDesk from "./components/mis_to_untis/MisExtractionDesk";
 import KeyRegistryDesk from "./components/registry/KeyRegistryDesk";
 import { pipelineApi } from "./api/pipelineApi";
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState("deploy");
+  // Primary pipeline default: Untis to MIS deployment
+  const [activeTab, setActiveTab] = useState("untis_to_mis");
   const [targetMis, setTargetMis] = useState("ARBOR");
   const [stagedDiffs, setStagedDiffs] = useState([]);
+  const [optionBlocks, setOptionBlocks] = useState([]);
   const [quarantineSummary, setQuarantineSummary] = useState({
     total_quarantined: 0,
     pending_count: 0,
     resolved_count: 0,
     ignored_count: 0,
   });
-  const [optionBlocks, setOptionBlocks] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const loadPipelineData = async () => {
     setLoading(true);
     try {
       const [diffs, qSummary] = await Promise.all([
-        pipelineApi.getStagedDiffs(targetMis),
-        pipelineApi.getQuarantineSummary(),
+        pipelineApi.getStagedDiffs(targetMis).catch(() => []),
+        pipelineApi
+          .getQuarantineSummary()
+          .catch(() => ({ pending_count: 0, resolved_count: 0 })),
       ]);
 
       setStagedDiffs(diffs);
       setQuarantineSummary(qSummary);
 
-      // Deduplicate option blocks across repeating timetable periods
+      // Consolidate option groups and pupil allocations
       const groupsMap = new Map();
-
       diffs
         .filter(
           (d) =>
@@ -73,23 +73,10 @@ export default function App() {
                 base_class: d.slot_payload?.class_code,
               })),
             });
-          } else {
-            const existing = groupsMap.get(groupId);
-            const assigned = d.slot_payload?.assigned_students || [];
-            if (assigned.length > existing.student_count) {
-              existing.student_count = assigned.length;
-              existing.students = assigned.map((id) => ({
-                untis_student_id: id,
-                student_name: id.replace("ST_", ""),
-                base_class: d.slot_payload?.class_code,
-              }));
-            }
           }
         });
 
       setOptionBlocks(Array.from(groupsMap.values()));
-    } catch {
-      // Backend diagnostic logs capture connection/parsing failures
     } finally {
       setLoading(false);
     }
@@ -98,10 +85,6 @@ export default function App() {
   useEffect(() => {
     loadPipelineData();
   }, [targetMis]);
-
-  const handleUploadSuccess = () => {
-    loadPipelineData();
-  };
 
   const createsCount = stagedDiffs.filter(
     (d) => d.change_type === "CREATE",
@@ -141,11 +124,11 @@ export default function App() {
             onClick={() => setActiveTab("quarantine")}
           />
           <MetricCard
-            title="Target Environment"
+            title="Target MIS"
             value={targetMis}
             icon={Clock}
             subtitle="API v1 Connected"
-            badge="Live Mode"
+            badge="Target System"
           />
           <MetricCard
             title="Elective Blocks"
@@ -157,10 +140,10 @@ export default function App() {
           />
         </div>
 
-        {/* Primary Pipeline View: Untis Deploy */}
-        {activeTab === "deploy" && (
+        {/* TAB 1: Primary Pipeline (Untis to Arbor/Bromcom) */}
+        {activeTab === "untis_to_mis" && (
           <div className="space-y-6">
-            <XmlUploadZone onUploadSuccess={handleUploadSuccess} />
+            <XmlUploadZone onUploadSuccess={loadPipelineData} />
 
             <PreFlightRunner
               targetMis={targetMis}
@@ -198,20 +181,20 @@ export default function App() {
           </div>
         )}
 
-        {/* Quarantine Desk View */}
+        {/* TAB 2: Quarantine Conflict Desk */}
         {activeTab === "quarantine" && (
           <QuarantineDesk onResolved={loadPipelineData} />
         )}
 
-        {/* Reverse Sync View: MIS to Untis DIF */}
-        {activeTab === "reverse_sync" && (
-          <div className="space-y-6">
-            <MisMasterPull targetMis={targetMis} />
-            <DifExportAction targetMis={targetMis} />
-          </div>
+        {/* TAB 3: Secondary Pipeline (Arbor/Bromcom to Untis Reverse Sync) */}
+        {activeTab === "mis_to_untis" && (
+          <MisExtractionDesk
+            targetMis={targetMis}
+            onExtractionCompleted={loadPipelineData}
+          />
         )}
 
-        {/* Key Registry Cross-Reference Explorer */}
+        {/* TAB 4: Identity Key Registry */}
         {activeTab === "registry" && <KeyRegistryDesk />}
       </main>
     </div>

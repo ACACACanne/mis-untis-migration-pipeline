@@ -1,95 +1,116 @@
 import axios from "axios";
 
-const client = axios.create({
+const apiClient = axios.create({
   baseURL: "/api/v1",
   headers: {
-    Accept: "application/json",
+    "Content-Type": "application/json",
   },
+  timeout: 30000,
 });
 
 export const pipelineApi = {
-  // System Health
+  // System Health & Telemetry
   getHealth: async () => {
-    const { data } = await client.get("/health");
-    return data;
+    const response = await apiClient.get("/health");
+    return response.data;
   },
 
-  // Upload & Stage Untis XML
+  // Primary Ingestion: Untis XML Upload
   uploadUntisXml: async (file) => {
     const formData = new FormData();
     formData.append("file", file);
-    const { data } = await client.post("/upload", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+    const response = await apiClient.post("/upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
-    return data;
+    return response.data;
   },
 
-  // Timetable Diffs & Simulator
+  // Staged Delta Management & Pre-Flight Simulation
   getStagedDiffs: async (targetMis = "ARBOR", status = "STAGED") => {
-    const { data } = await client.get("/diff", {
-      params: { target_mis: targetMis, status },
+    const response = await apiClient.get("/diff", {
+      params: {
+        target_mis: targetMis.toUpperCase(),
+        status: status.toUpperCase(),
+      },
     });
-    return data;
+    return response.data;
   },
 
-  runDryRunSimulation: async (targetMis = "ARBOR") => {
-    const { data } = await client.post("/diff/dry-run", null, {
-      params: { target_mis: targetMis },
+  runDryRun: async (targetMis = "ARBOR") => {
+    const response = await apiClient.post("/diff/dry-run", null, {
+      params: {
+        target_mis: targetMis.toUpperCase(),
+      },
     });
-    return data;
+    return response.data;
   },
 
-  // Publish / Commit to MIS
-  publishToMis: async (targetMis = "ARBOR") => {
-    const { data } = await client.post("/publish", null, {
-      params: { target_mis: targetMis },
+  // Target MIS Live Deployment
+  publishDeployment: async (targetMis = "ARBOR") => {
+    const response = await apiClient.post("/publish", null, {
+      params: {
+        target_mis: targetMis.toUpperCase(),
+      },
     });
-    return data;
+    return response.data;
   },
 
-  // Quarantine Management
-  getQuarantineItems: async (statusFilter = null) => {
-    const params = statusFilter ? { status_filter: statusFilter } : {};
-    const { data } = await client.get("/quarantine", { params });
-    return data;
+  // Quarantine Desk & Conflict Remediation
+  getQuarantineItems: async (status = "PENDING") => {
+    const response = await apiClient.get("/quarantine", {
+      params: {
+        status: status.toUpperCase(),
+      },
+    });
+    return response.data;
   },
 
   getQuarantineSummary: async () => {
-    const { data } = await client.get("/quarantine/summary");
-    return data;
+    const response = await apiClient.get("/quarantine/summary");
+    return response.data;
   },
 
-  resolveQuarantineItem: async (itemId, status, resolvedOverride) => {
-    const { data } = await client.patch(`/quarantine/${itemId}/resolve`, {
-      status,
-      resolved_override: resolvedOverride,
+  resolveQuarantineItem: async (itemId, overridePayload) => {
+    const response = await apiClient.patch(
+      `/quarantine/${itemId}/resolve`,
+      overridePayload,
+    );
+    return response.data;
+  },
+
+  // Reverse Master Sync (MIS to Untis DIF)
+  previewMisSchedule: async (targetMis = "ARBOR") => {
+    const response = await apiClient.get("/reverse-sync/preview", {
+      params: {
+        target_mis: targetMis.toUpperCase(),
+      },
     });
-    return data;
+    return response.data;
   },
 
-  // Reverse Sync (MIS to Untis)
-  previewMisCatalog: async (targetMis = "ARBOR") => {
-    const { data } = await client.get("/reverse-sync/preview", {
-      params: { target_mis: targetMis },
+  getMisMasterPreview: async (targetMis = "ARBOR") => {
+    const response = await apiClient.get("/reverse-sync/preview", {
+      params: {
+        target_mis: targetMis.toUpperCase(),
+      },
     });
-    return data;
+    return response.data;
   },
 
-  getDifExportUrl: (targetMis = "ARBOR") => {
-    return `/api/v1/reverse-sync/export-dif?target_mis=${targetMis}`;
+  getDifDownloadUrl: (targetMis = "ARBOR") => {
+    return `/api/v1/reverse-sync/export-dif?target_mis=${targetMis.toUpperCase()}`;
   },
 
-  // Key Registry
-  searchRegistry: async (query = "", entityType = "") => {
+  // Cross-System Key Registry
+  getKeyRegistry: async (search = "", entityType = "") => {
     const params = {};
-    if (query) params.query = query;
+    if (search) params.search = search;
     if (entityType) params.entity_type = entityType;
-    const { data } = await client.get("/registry", { params });
-    return data;
-  },
-
-  registerKeyMapping: async (mapping) => {
-    const { data } = await client.post("/registry", mapping);
-    return data;
+    const response = await apiClient.get("/registry", { params });
+    return response.data;
   },
 };
+
+export default pipelineApi;
