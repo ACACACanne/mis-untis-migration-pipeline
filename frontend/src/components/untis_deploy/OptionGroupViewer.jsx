@@ -29,7 +29,7 @@ export default function OptionGroupViewer({ optionBlocks = [] }) {
     );
   }
 
-  // Filter blocks by group identifier or subject code
+  // Filter blocks by group identifier, subject, or cohort
   const filteredBlocks = optionBlocks.filter((block) => {
     const term = searchFilter.toLowerCase();
     const identifier = (
@@ -81,7 +81,8 @@ export default function OptionGroupViewer({ optionBlocks = [] }) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {filteredBlocks.map((block, idx) => {
-          const blockKey = `${block.group_identifier || block.ClassCode || idx}`;
+          // Include index suffix to guarantee key uniqueness across identical identifiers
+          const blockKey = `${block.group_identifier || block.ClassCode || "group"}-${idx}`;
           const isExpanded = !!expandedBlocks[blockKey];
           const students = block.students || block.EnrolledStudents || [];
           const studentCount =
