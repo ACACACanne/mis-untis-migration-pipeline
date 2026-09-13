@@ -6,6 +6,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.api.v1.api import api_router
+from app.core.database import engine, Base
+import app.models 
+
+Base.metadata.create_all(bind=engine)  # Create tables if they don't exist
 
 
 @asynccontextmanager
