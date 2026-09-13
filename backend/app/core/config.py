@@ -1,49 +1,43 @@
-from pathlib import Path
+# backend/app/core/config.py
+
 from typing import List
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "Untis to MIS Timetable Migration Pipeline"
+    PROJECT_NAME: str = "Untis UK MIS Migration Bridge"
     API_V1_STR: str = "/api/v1"
-    DEBUG: bool = True
+    ENVIRONMENT: str = "development"
+    SECRET_KEY: str = "dev-secret-key-change-in-production-12345"
 
-    # PostgreSQL Database
-    DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/untis_mis_pipeline"
-
-    # Target MIS Credentials
-    ARBOR_API_BASE_URL: str = "https://api.arbor.sc/v1"
-    ARBOR_APP_ID: str = "mock_arbor_app_id"
-    ARBOR_API_KEY: str = "mock_arbor_secret_key"
-
-    BROMCOM_API_BASE_URL: str = "https://cloudservice.bromcom.com/v1"
-    BROMCOM_SCHOOL_ID: int = 10001
-    BROMCOM_API_TOKEN: str = "mock_bromcom_bearer_token"
-
-    # Untis Storage & Limits
-    UNTIS_UPLOAD_DIR: str = "./uploads/untis"
-    MAX_UPLOAD_SIZE_MB: int = 25
-
-    # Security
-    API_SECRET_KEY: str = "migration-pipeline-internal-secret-token"
-
-    # CORS
+    # CORS origins
     BACKEND_CORS_ORIGINS: List[str] = [
         "http://localhost:5173",
         "http://127.0.0.1:5173",
         "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "*",
     ]
 
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        case_sensitive=True,
-        extra="ignore",
-    )
+    # Primary pipeline: Untis to UK MIS; Secondary: MIS to Untis reverse sync
+    ACTIVE_MODE: str = "UNTIS_TO_MIS"
+
+    # Database
+    DATABASE_URL: str = "sqlite:///./untis_pipeline.db"
+
+    # Target MIS Configuration
+    ARBOR_BASE_URL: str = "https://api.arbor.sc/v1"
+    ARBOR_API_KEY: str = "mock-arbor-key"
+    ARBOR_APP_ID: str = "mock-arbor-app"
+
+    BROMCOM_BASE_URL: str = "https://cloudapi.bromcom.com/v1"
+    BROMCOM_API_KEY: str = "mock-bromcom-key"
+    BROMCOM_SCHOOL_ID: int = 12345
+
+    class Config:
+        case_sensitive = True
+        env_file = ".env"
+        extra = "allow"
 
 
-# Instantiate Settings outside the class block (no leading indentation)
 settings = Settings()
-
-# Ensure uploads directory exists on disk
-Path(settings.UNTIS_UPLOAD_DIR).mkdir(parents=True, exist_ok=True)
