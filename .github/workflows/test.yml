@@ -1,0 +1,76 @@
+name: Test Suite
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  backend-tests:
+    name: Backend Tests (Pytest & Postgres)
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: untis_mis_pipeline_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt
+
+      - name: Run Backend Tests
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/untis_mis_pipeline_test
+          DEBUG: "True"
+        run: |
+          cd backend
+          # Runs pytest; accepts exit code 5 (no tests collected) during initial setup
+          pytest -v tests/ || test $? -eq 5
+
+  frontend-tests:
+    name: Frontend Build & Verification
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package.json
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          npm ci || npm install
+
+      - name: Run Build Check
+        run: |
+          cd frontend
+          npm run build
