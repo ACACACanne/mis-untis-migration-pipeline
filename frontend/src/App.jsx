@@ -47,28 +47,49 @@ export default function App() {
       setStagedDiffs(diffs);
       setQuarantineSummary(qSummary);
 
-      // Extract option groups and elective blocks from staged timetable slots
-      const extractedOptions = diffs
+      // Deduplicate option blocks across repeating timetable periods
+      const groupsMap = new Map();
+
+      diffs
         .filter(
           (d) =>
             d.slot_payload?.studentgroup_id ||
             d.slot_payload?.assigned_students?.length,
         )
-        .map((d) => ({
-          group_identifier: d.slot_payload?.studentgroup_id,
-          subject_code: d.slot_payload?.subject_code,
-          academic_cohort: d.slot_payload?.class_code,
-          student_count: d.slot_payload?.assigned_students?.length || 0,
-          students: (d.slot_payload?.assigned_students || []).map((id) => ({
-            untis_student_id: id,
-            student_name: id.replace("ST_", ""),
-            base_class: d.slot_payload?.class_code,
-          })),
-        }));
+        .forEach((d) => {
+          const groupId =
+            d.slot_payload?.studentgroup_id || d.slot_payload?.class_code;
+          if (!groupId) return;
 
-      setOptionBlocks(extractedOptions);
+          if (!groupsMap.has(groupId)) {
+            groupsMap.set(groupId, {
+              group_identifier: groupId,
+              subject_code: d.slot_payload?.subject_code,
+              academic_cohort: d.slot_payload?.class_code,
+              student_count: d.slot_payload?.assigned_students?.length || 0,
+              students: (d.slot_payload?.assigned_students || []).map((id) => ({
+                untis_student_id: id,
+                student_name: id.replace("ST_", ""),
+                base_class: d.slot_payload?.class_code,
+              })),
+            });
+          } else {
+            const existing = groupsMap.get(groupId);
+            const assigned = d.slot_payload?.assigned_students || [];
+            if (assigned.length > existing.student_count) {
+              existing.student_count = assigned.length;
+              existing.students = assigned.map((id) => ({
+                untis_student_id: id,
+                student_name: id.replace("ST_", ""),
+                base_class: d.slot_payload?.class_code,
+              }));
+            }
+          }
+        });
+
+      setOptionBlocks(Array.from(groupsMap.values()));
     } catch {
-      // Backend error logging handles diagnostic traces
+      // Backend diagnostic logs capture connection/parsing failures
     } finally {
       setLoading(false);
     }
