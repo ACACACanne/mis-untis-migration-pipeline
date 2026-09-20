@@ -3,6 +3,7 @@ from app.core.database import Base
 
 class KeyRegistry(Base):
     __tablename__ = "key_registry"
+    __table_args__ = {"extend_existing": True}  # Allow table to be extended if it already exists
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     entity_type = Column(String(50), nullable=False, index=True)  # teacher, room, subject, class, student

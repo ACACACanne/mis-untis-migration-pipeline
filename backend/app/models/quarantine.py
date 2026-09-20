@@ -5,6 +5,7 @@ from app.core.database import Base
 
 class QuarantineItem(Base):
     __tablename__ = "quarantine_items"
+    __table_args__ = {"extend_existing": True}  # Allow table to be extended if it already exists
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     sync_direction = Column(String(20), nullable=False, default="UNTIS_TO_MIS")

@@ -5,6 +5,7 @@ from app.core.database import Base
 
 class TimetableDiff(Base):
     __tablename__ = "timetable_diff"
+    __table_args__ = {"extend_existing": True}  # Allow table to be extended if it already exists
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     target_mis = Column(String(20), nullable=False, index=True)  # ARBOR or BROMCOM
