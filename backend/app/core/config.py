@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     ]
 
     # Primary pipeline: Untis to UK MIS; Secondary: MIS to Untis reverse sync
-    ACTIVE_MODE: str = "UNTIS_TO_MIS"
+    ACTIVE_MODE: str = "MIS_TO_UNTIS"
 
     # Database
     DATABASE_URL: str = "sqlite:///./untis_pipeline.db"
