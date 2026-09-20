@@ -4,6 +4,7 @@ from app.core.database import Base
 
 class SyncAudit(Base):
     __tablename__ = "sync_audit"
+    __table_args__ = {"extend_existing": True}  # Allow table to be extended if it already exists
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     sync_direction = Column(String(20), nullable=False, index=True)  # UNTIS_TO_MIS or MIS_TO_UNTIS
