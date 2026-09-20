@@ -1,113 +1,126 @@
-from typing import Any, Dict, List
+# backend/app/pipeline/mis_to_untis/master_extractor.py
+
+from typing import Any, Dict, List, Tuple
+from sqlalchemy.orm import Session
+
 from app.connectors.arbor_api_client import ArborApiClient
 from app.connectors.bromcom_api_client import BromcomApiClient
+from app.connectors.untis_dif_writer import UntisDifWriter
+from app.models.quarantine import QuarantineItem
+from app.models.sync_audit import SyncAudit
 
 
-class MisMasterExtractor:
-    """Extracts master baseline records (staff, rooms, classes, students) from active MIS instances."""
+class MisToUntisExtractor:
+    """Primary pipeline engine: pulls active MIS schedules and transforms them into Untis packages."""
 
-    def __init__(self, target_mis: str = "ARBOR"):
+    def __init__(self, db: Session, target_mis: str = "ARBOR"):
+        self.db = db
         self.target_mis = target_mis.upper()
-        self.arbor_client = ArborApiClient() if self.target_mis == "ARBOR" else None
-        self.bromcom_client = BromcomApiClient() if self.target_mis == "BROMCOM" else None
+        self.dif_writer = UntisDifWriter()
+        self.arbor_client = ArborApiClient()
+        self.bromcom_client = BromcomApiClient()
 
-    async def fetch_master_catalog(self) -> Dict[str, List[Dict[str, Any]]]:
-        """Fetches and normalizes master records into a standard dictionary."""
+    async def fetch_raw_schedule(self) -> Dict[str, Any]:
         if self.target_mis == "ARBOR":
-            return await self._extract_from_arbor()
-        elif self.target_mis == "BROMCOM":
-            return await self._extract_from_bromcom()
-        else:
-            raise ValueError(f"Unsupported target MIS: {self.target_mis}")
+            return await self.arbor_client.extract_complete_timetable()
+        return await self.bromcom_client.extract_complete_timetable()
 
-    async def _extract_from_arbor(self) -> Dict[str, List[Dict[str, Any]]]:
-        if not self.arbor_client:
-            raise RuntimeError("Arbor client is uninitialized.")
+    def validate_and_quarantine(
+        self, raw_schedule: Dict[str, Any]
+    ) -> Tuple[Dict[str, Any], List[QuarantineItem]]:
+        anomalies: List[QuarantineItem] = []
+        clean_slots: List[Dict[str, Any]] = []
 
-        raw_staff = await self.arbor_client.get_staff()
-        raw_rooms = await self.arbor_client.get_rooms()
-        raw_groups = await self.arbor_client.get_teaching_groups()
+        seen_staff_slots = set()
+        seen_room_slots = set()
 
-        teachers = [
-            {
-                "staff_code": s.get("short_code") or f"TR_{s.get('id')}",
-                "surname": s.get("legal_last_name", ""),
-                "forename": s.get("legal_first_name", ""),
-                "title": s.get("title", ""),
-                "national_id": s.get("ni_number", ""),
-            }
-            for s in raw_staff
-        ]
+        lessons_map = {l["lesson_id"]: l for l in raw_schedule.get("lessons", [])}
 
-        rooms = [
-            {
-                "room_code": r.get("room_code") or f"RM_{r.get('id')}",
-                "name": r.get("room_name", ""),
-                "capacity": r.get("capacity", 30),
-            }
-            for r in raw_rooms
-        ]
+        for slot in raw_schedule.get("slots", []):
+            les_id = slot.get("lesson_id")
+            day = slot.get("day_number")
+            period = slot.get("period_number")
+            room = slot.get("room_code")
+            parent_les = lessons_map.get(les_id, {})
+            teacher = parent_les.get("teacher_code")
 
-        classes = [
-            {
-                "class_code": g.get("code", ""),
-                "name": g.get("name", ""),
-                "department": g.get("subject_name", ""),
-                "year_group": g.get("year_group", ""),
-            }
-            for g in raw_groups
-        ]
+            if not teacher:
+                q = QuarantineItem(
+                    sync_direction="MIS_TO_UNTIS",
+                    lesson_id=les_id,
+                    entity_type="teacher",
+                    error_type="ORPHAN_SLOT",
+                    details=f"MIS Slot {les_id} has no assigned teacher at Day {day}, Period {period}.",
+                    raw_payload=slot,
+                    status="PENDING",
+                )
+                anomalies.append(q)
+                continue
 
-        return {
-            "subjects": [],
-            "teachers": teachers,
-            "classes": classes,
-            "rooms": rooms,
-            "students": [],
+            staff_key = (teacher, day, period)
+            if staff_key in seen_staff_slots:
+                q = QuarantineItem(
+                    sync_direction="MIS_TO_UNTIS",
+                    lesson_id=les_id,
+                    entity_type="teacher",
+                    error_type="COLLISION",
+                    details=f"Staff collision in MIS: '{teacher}' double-booked at Day {day}, Period {period}.",
+                    raw_payload=slot,
+                    status="PENDING",
+                )
+                anomalies.append(q)
+                continue
+            seen_staff_slots.add(staff_key)
+
+            if room:
+                room_key = (room, day, period)
+                if room_key in seen_room_slots:
+                    q = QuarantineItem(
+                        sync_direction="MIS_TO_UNTIS",
+                        lesson_id=les_id,
+                        entity_type="room",
+                        error_type="COLLISION",
+                        details=f"Room collision in MIS: '{room}' double-booked at Day {day}, Period {period}.",
+                        raw_payload=slot,
+                        status="PENDING",
+                    )
+                    anomalies.append(q)
+                    continue
+                seen_room_slots.add(room_key)
+
+            clean_slots.append(slot)
+
+        for a in anomalies:
+            self.db.add(a)
+
+        clean_schedule = dict(raw_schedule)
+        clean_schedule["slots"] = clean_slots
+        return clean_schedule, anomalies
+
+    async def execute_export_pipeline(self) -> Tuple[Dict[str, Any], bytes]:
+        raw_schedule = await self.fetch_raw_schedule()
+        clean_schedule, anomalies = self.validate_and_quarantine(raw_schedule)
+
+        audit = SyncAudit(
+            sync_direction=f"{self.target_mis}_TO_UNTIS",
+            status="COMPLETED" if not anomalies else "PARTIAL",
+            total_records=len(raw_schedule.get("slots", [])),
+            staged_records=len(clean_schedule.get("slots", [])),
+            quarantined_records=len(anomalies),
+        )
+        self.db.add(audit)
+        self.db.commit()
+
+        zip_stream = self.dif_writer.assemble_dif_zip(clean_schedule)
+        summary = {
+            "source_mis": self.target_mis,
+            "periods_exported": len(clean_schedule.get("periods", [])),
+            "teachers_exported": len(clean_schedule.get("teachers", [])),
+            "classes_exported": len(clean_schedule.get("classes", [])),
+            "rooms_exported": len(clean_schedule.get("rooms", [])),
+            "subjects_exported": len(clean_schedule.get("subjects", [])),
+            "lessons_exported": len(clean_schedule.get("lessons", [])),
+            "slots_exported": len(clean_schedule.get("slots", [])),
+            "quarantined_anomalies": len(anomalies),
         }
-
-    async def _extract_from_bromcom(self) -> Dict[str, List[Dict[str, Any]]]:
-        if not self.bromcom_client:
-            raise RuntimeError("Bromcom client is uninitialized.")
-
-        raw_staff = await self.bromcom_client.get_staff()
-        raw_rooms = await self.bromcom_client.get_rooms()
-        raw_classes = await self.bromcom_client.get_classes()
-
-        teachers = [
-            {
-                "staff_code": s.get("StaffCode") or f"TR_{s.get('StaffId')}",
-                "surname": s.get("LastName", ""),
-                "forename": s.get("FirstName", ""),
-                "title": s.get("Salutation", ""),
-                "national_id": str(s.get("StaffId", "")),
-            }
-            for s in raw_staff
-        ]
-
-        rooms = [
-            {
-                "room_code": r.get("RoomCode") or f"RM_{r.get('RoomId')}",
-                "name": r.get("RoomName", ""),
-                "capacity": r.get("Capacity", 30),
-            }
-            for r in raw_rooms
-        ]
-
-        classes = [
-            {
-                "class_code": c.get("ClassCode", ""),
-                "name": c.get("ClassName", ""),
-                "department": c.get("SubjectCode", ""),
-                "year_group": c.get("YearGroup", ""),
-            }
-            for c in raw_classes
-        ]
-
-        return {
-            "subjects": [],
-            "teachers": teachers,
-            "classes": classes,
-            "rooms": rooms,
-            "students": [],
-        }
+        return summary, zip_stream.getvalue()
