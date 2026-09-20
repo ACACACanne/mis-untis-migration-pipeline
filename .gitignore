@@ -294,3 +294,8 @@ backend/tests/
 backend/tests/fixtures/
 tests/
 test_*.py
+
+*.db
+*.sqlite3
+uploads/
+exports/
