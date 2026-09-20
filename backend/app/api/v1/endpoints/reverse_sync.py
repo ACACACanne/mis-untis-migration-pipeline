@@ -1,7 +1,8 @@
 # backend/app/api/v1/endpoints/reverse_sync.py
 
+import json
 from typing import Any, Dict
-from fastapi import APIRouter, Depends, Query, Response
+from fastapi import APIRouter, Depends, Query, Response, UploadFile, File, HTTPException
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
@@ -41,6 +42,37 @@ async def preview_mis_timetable(
             "slots_count": 12,
             "note": f"Fallback dataset loaded: {str(exc)}",
         }
+
+
+@router.post("/upload-synthetic")
+async def upload_synthetic_mis_file(
+    target_mis: str = Query("ARBOR", pattern="^(ARBOR|BROMCOM)$"),
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+):
+    """Parses an uploaded synthetic or exported MIS JSON file and runs it through quarantine."""
+    try:
+        content = await file.read()
+        payload = json.loads(content.decode("utf-8"))
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=f"Invalid JSON file format: {str(exc)}")
+
+    extractor = MisToUntisExtractor(db, target_mis=target_mis)
+    clean_schedule, anomalies = extractor.validate_and_quarantine(payload)
+
+    return {
+        "status": "success",
+        "filename": file.filename,
+        "source_mis": target_mis.upper(),
+        "periods_count": len(clean_schedule.get("periods", [])),
+        "teachers_count": len(clean_schedule.get("teachers", [])),
+        "classes_count": len(clean_schedule.get("classes", [])),
+        "rooms_count": len(clean_schedule.get("rooms", [])),
+        "subjects_count": len(clean_schedule.get("subjects", [])),
+        "lessons_count": len(clean_schedule.get("lessons", [])),
+        "slots_count": len(clean_schedule.get("slots", [])),
+        "quarantined_count": len(anomalies),
+    }
 
 
 @router.get("/export-dif")
