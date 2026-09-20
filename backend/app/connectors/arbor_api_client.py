@@ -138,9 +138,6 @@ class ArborApiClient:
             "slots": slots,
         }
 
-    # backend/app/connectors/arbor_api_client.py
-# (Add these methods inside class ArborApiClient)
-
     async def create_session(self, payload: Dict[str, Any]) -> Dict[str, Any]:
         """Creates an Arbor TimetableSlot / Session."""
         if getattr(settings, "ENVIRONMENT", "development") == "development" or "mock" in self.api_key.lower():

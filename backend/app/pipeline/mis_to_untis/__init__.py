@@ -1,9 +1,8 @@
 # backend/app/pipeline/mis_to_untis/__init__.py
 
-from app.pipeline.mis_to_untis.master_extractor import (
-    MisToUntisExtractor,
-    MisMasterExtractor,
-)
-from app.pipeline.mis_to_untis.untis_formatter import UntisFormatter
+from app.pipeline.mis_to_untis.master_extractor import MisToUntisExtractor
 
-__all__ = ["MisToUntisExtractor", "MisMasterExtractor", "UntisFormatter"]
+# Provide aliases so imports never fail regardless of naming
+MisMasterExtractor = MisToUntisExtractor
+
+__all__ = ["MisToUntisExtractor", "MisMasterExtractor"]

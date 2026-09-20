@@ -103,9 +103,6 @@ class BromcomApiClient:
             "slots": slots,
         }
 
-    # backend/app/connectors/bromcom_api_client.py
-# (Add these methods inside class BromcomApiClient)
-
     async def schedule_assignment(self, payload: Dict[str, Any]) -> Dict[str, Any]:
         """Schedules a class assignment in Bromcom."""
         if getattr(settings, "ENVIRONMENT", "development") == "development" or "mock" in self.api_key.lower():
