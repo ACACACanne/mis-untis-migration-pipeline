@@ -306,34 +306,116 @@ export default function MisExtractionDesk({
         )}
       </div>
 
-      {/* Untis Ingestion Instructions */}
-      <div className="p-5 bg-slate-900/40 border border-slate-800 rounded-2xl space-y-3">
-        <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
-          How to Ingest into Untis Desktop
-        </h3>
-        <ol className="list-decimal list-inside text-xs text-slate-400 space-y-1.5">
-          <li>
-            Download and extract the{" "}
-            <code className="text-emerald-400 font-mono">
-              Untis_Complete_{activeMis}.zip
-            </code>{" "}
-            archive.
-          </li>
-          <li>
-            Open Untis and select{" "}
-            <strong>File → Import/Export → DIF Import</strong> (or{" "}
-            <em>Data Exchange → DIF Format</em>).
-          </li>
-          <li>
-            Choose the folder containing the extracted{" "}
-            <code className="text-slate-300 font-mono">GPU001.txt</code> to{" "}
-            <code className="text-slate-300 font-mono">GPU008.txt</code> files.
-          </li>
-          <li>
-            Execute the import to populate your Untis timetable master with
-            active {activeMis} structures.
-          </li>
-        </ol>
+      {/* Dynamic Untis Ingestion & Verification Card */}
+      <div className="p-5 bg-slate-900/40 border border-slate-800 rounded-2xl space-y-4">
+        {/* Card Header with Dynamic Target MIS Toggle */}
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-2 border-b border-slate-800/60">
+          <div>
+            <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
+              How to Ingest or Verify Output
+            </h3>
+            <p className="text-[11px] text-slate-500 mt-0.5">
+              Instructions automatically adapt for {activeMis} DIF exports and
+              verification
+            </p>
+          </div>
+
+          {/* Interactive Target MIS Switcher */}
+          <div className="flex items-center gap-1.5 bg-slate-950 border border-slate-800 p-1 rounded-xl">
+            <span className="text-[10px] text-slate-400 uppercase font-mono px-1.5">
+              Target:
+            </span>
+            <button
+              type="button"
+              onClick={() => setTargetMis && setTargetMis("ARBOR")}
+              className={`px-2.5 py-1 text-[11px] font-semibold rounded-lg transition-all ${
+                activeMis === "ARBOR"
+                  ? "bg-emerald-500 text-slate-950 shadow-sm"
+                  : "text-slate-400 hover:text-slate-200"
+              }`}
+            >
+              ARBOR
+            </button>
+            <button
+              type="button"
+              onClick={() => setTargetMis && setTargetMis("BROMCOM")}
+              className={`px-2.5 py-1 text-[11px] font-semibold rounded-lg transition-all ${
+                activeMis === "BROMCOM"
+                  ? "bg-emerald-500 text-slate-950 shadow-sm"
+                  : "text-slate-400 hover:text-slate-200"
+              }`}
+            >
+              BROMCOM
+            </button>
+          </div>
+        </div>
+
+        {/* Instruction Columns */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-400">
+          {/* Option A: Full Untis Desktop Import */}
+          <div className="p-4 bg-slate-950/60 border border-slate-800/80 rounded-xl space-y-2">
+            <span className="font-semibold text-emerald-400 flex items-center gap-1.5">
+              Option A: Ingest into Untis Desktop
+            </span>
+            <ol className="list-decimal list-inside space-y-1.5 leading-relaxed">
+              <li>
+                Download and extract{" "}
+                <code className="text-emerald-300 font-mono bg-emerald-950/40 px-1 py-0.5 rounded border border-emerald-800/50">
+                  Untis_Complete_{activeMis}.zip
+                </code>
+                .
+              </li>
+              <li>
+                Open Untis and go to{" "}
+                <strong>File → Import/Export → DIF Import</strong> (or{" "}
+                <em>Data Exchange → DIF Format</em>).
+              </li>
+              <li>
+                Select the folder containing{" "}
+                <code className="text-slate-300 font-mono">GPU001.txt</code>{" "}
+                through{" "}
+                <code className="text-slate-300 font-mono">GPU008.txt</code>.
+              </li>
+              <li>
+                Execute import to populate your timetable master with active{" "}
+                <strong className="text-emerald-400">{activeMis}</strong>{" "}
+                records.
+              </li>
+            </ol>
+          </div>
+
+          {/* Option B: Offline / Spreadsheet Inspection */}
+          <div className="p-4 bg-slate-950/60 border border-slate-800/80 rounded-xl space-y-2">
+            <span className="font-semibold text-amber-400 flex items-center gap-1.5">
+              Option B: Quick Text/Spreadsheet Inspection (No Untis Needed)
+            </span>
+            <p className="leading-relaxed">
+              If Untis Desktop is not installed on this workstation:
+            </p>
+            <ul className="list-disc list-inside space-y-1 leading-relaxed text-slate-400">
+              <li>
+                Unzip the package and inspect the comma-separated text files in
+                Notepad or Excel.
+              </li>
+              <li>
+                <strong className="text-slate-200 font-mono">GPU001.txt</strong>
+                : Bell schedule & period grid times.
+              </li>
+              <li>
+                <strong className="text-slate-200 font-mono">
+                  GPU002 / GPU003
+                </strong>
+                : {activeMis} staff codes & form cohorts.
+              </li>
+              <li>
+                <strong className="text-slate-200 font-mono">
+                  GPU007 / GPU008
+                </strong>
+                : Course definitions & room placements.
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   );
