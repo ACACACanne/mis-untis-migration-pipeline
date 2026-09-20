@@ -1,23 +1,23 @@
-from sqlalchemy import JSON, Column, Integer, String, DateTime, func
-from sqlalchemy.dialects.postgresql import JSONB
+# backend/app/models/timetable_diff.py
+
+from sqlalchemy import Column, Integer, String, DateTime, JSON
+from sqlalchemy.sql import func
 from app.core.database import Base
 
 
 class TimetableDiff(Base):
     __tablename__ = "timetable_diff"
-    __table_args__ = {"extend_existing": True}  # Allow table to be extended if it already exists
+    __table_args__ = {"extend_existing": True}
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    target_mis = Column(String(50), nullable=False, index=True)  # ARBOR or BROMCOM
-    untis_lesson_id = Column(String(100), nullable=False, index=True)
-    day_number = Column(Integer, nullable=False)
-    period_number = Column(Integer, nullable=False)
-    # Change type classification: CREATE, UPDATE, DELETE, UNCHANGED
-    change_type = Column(String(30), nullable=False, index=True)
-    slot_payload = Column(JSON, nullable=False)
-    staged_slot_payload = Column(JSON, nullable=False)
-    # Status lifecycle: STAGED, COMMITTED, FAILED
-    status = Column(String(30), nullable=False, server_default="STAGED", index=True)
+    id = Column(Integer, primary_key=True, index=True)
+    target_mis = Column(String(50), nullable=False, default="ARBOR")
+    untis_lesson_id = Column(String(100), nullable=True, index=True)
+    day_number = Column(Integer, nullable=True)
+    period_number = Column(Integer, nullable=True)
+    change_type = Column(String(20), nullable=False, index=True)  # Single index definition
+    slot_payload = Column(JSON, nullable=True)
+    staged_slot_payload = Column(JSON, nullable=True)
+    status = Column(String(20), nullable=False, default="STAGED", index=True)  # Single index definition
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     def __repr__(self):

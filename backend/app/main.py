@@ -9,7 +9,10 @@ from app.api.v1.api import api_router
 from app.core.database import engine, Base
 import app.models 
 
-Base.metadata.create_all(bind=engine)  # Create tables if they don't exist
+try:
+    Base.metadata.create_all(bind=engine)  # Create tables if they don't exist
+except Exception as exc:
+    print(f"Error creating tables: {exc}")  
 
 
 @asynccontextmanager
