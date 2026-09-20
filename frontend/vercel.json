@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/v1/:path*",
-      "destination": "https://untis-mis-api.onrender.com/api/v1/:path*"
+      "destination": "https://mis-untis-migration-pipeline.onrender.com/"
     },
     {
       "source": "/(.*)",
