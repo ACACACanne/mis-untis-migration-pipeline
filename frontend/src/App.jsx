@@ -176,6 +176,9 @@ export default function App() {
         {activeTab === "mis_to_untis" && (
           <MisExtractionDesk
             targetMis={targetMis}
+            setTargetMis={setTargetMis}
+            misStats={misStats}
+            onRefresh={loadPipelineData}
             onExtractionCompleted={loadPipelineData}
           />
         )}

@@ -1,6 +1,6 @@
 // frontend/src/components/mis_to_untis/MisExtractionDesk.jsx
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   DownloadCloud,
   CheckCircle2,
@@ -11,47 +11,142 @@ import {
   Calendar,
   Building,
   BookOpen,
+  UploadCloud,
+  FileCode,
+  Check,
 } from "lucide-react";
 import { pipelineApi } from "../../api/pipelineApi";
 
 export default function MisExtractionDesk({
-  targetMis,
+  targetMis = "ARBOR",
+  setTargetMis,
   onExtractionCompleted,
 }) {
   const [loading, setLoading] = useState(false);
   const [scheduleData, setScheduleData] = useState(null);
   const [downloadReady, setDownloadReady] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [uploadedFileName, setUploadedFileName] = useState(null);
+  const fileInputRef = useRef(null);
+
+  const activeMis = (targetMis || "ARBOR").toUpperCase();
+
+  const handleSelectMis = (misKey) => {
+    if (setTargetMis) {
+      setTargetMis(misKey);
+    }
+    setScheduleData(null);
+    setDownloadReady(false);
+    setUploadedFileName(null);
+  };
 
   const handleQueryMis = async () => {
     setLoading(true);
     try {
-      const preview = await pipelineApi.previewMisSchedule(targetMis);
+      const preview = await pipelineApi.previewMisSchedule(activeMis);
       setScheduleData(preview);
       setDownloadReady(true);
+      setUploadedFileName(null);
       if (onExtractionCompleted) onExtractionCompleted();
     } catch (err) {
-      console.error("Failed to query MIS schedule:", err);
+      console.error(`Failed to query live ${activeMis} schedule:`, err);
     } finally {
       setLoading(false);
     }
   };
 
-  const downloadUrl = pipelineApi.getDifDownloadUrl(targetMis);
+  const handleFileUpload = async (file) => {
+    if (!file) return;
+    setLoading(true);
+    try {
+      const res = await pipelineApi.uploadSyntheticMisFile(file, activeMis);
+      setScheduleData(res);
+      setUploadedFileName(file.name);
+      setDownloadReady(true);
+      if (onExtractionCompleted) onExtractionCompleted();
+    } catch (err) {
+      console.error(`Failed to upload synthetic ${activeMis} file:`, err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const onDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const onDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleFileUpload(e.dataTransfer.files[0]);
+    }
+  };
+
+  const downloadUrl = pipelineApi.getDifDownloadUrl(activeMis);
+  const fixtureExampleName =
+    activeMis === "ARBOR"
+      ? "mock_arbor_response.json"
+      : "mock_bromcom_response.json";
 
   return (
     <div className="space-y-6">
-      <div className="p-6 bg-slate-900/60 border border-slate-800 rounded-2xl space-y-4">
-        <div className="flex flex-wrap items-center justify-between gap-4">
+      <div className="p-6 bg-slate-900/60 border border-slate-800 rounded-2xl space-y-5">
+        {/* Source MIS Selector & Action Bar */}
+        <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800/80">
           <div>
-            <h2 className="text-sm font-semibold text-slate-100 uppercase tracking-wider flex items-center gap-2">
+            <div className="flex items-center gap-2">
               <Server className="w-4 h-4 text-emerald-400" />
-              Source MIS Schedule Extraction ({targetMis})
-            </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Pull active teaching groups, staff allocations, and room bookings
-              from {targetMis} into Untis DIF format (GPU001–GPU008).
+              <h2 className="text-sm font-semibold text-slate-100 uppercase tracking-wider">
+                Source MIS Schedule Extraction ({activeMis})
+              </h2>
+            </div>
+            <p className="text-xs text-slate-400 mt-1">
+              Select your source MIS to query live schedules or drop synthetic
+              JSON fixtures to export Untis DIF files.
             </p>
           </div>
+
+          {/* MIS Switcher Tabs */}
+          <div className="flex items-center bg-slate-950 border border-slate-800 rounded-xl p-1">
+            <button
+              type="button"
+              onClick={() => handleSelectMis("ARBOR")}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                activeMis === "ARBOR"
+                  ? "bg-emerald-500 text-slate-950 shadow-sm"
+                  : "text-slate-400 hover:text-slate-200"
+              }`}
+            >
+              {activeMis === "ARBOR" && <Check className="w-3.5 h-3.5" />}
+              <span>Arbor MIS</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleSelectMis("BROMCOM")}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                activeMis === "BROMCOM"
+                  ? "bg-emerald-500 text-slate-950 shadow-sm"
+                  : "text-slate-400 hover:text-slate-200"
+              }`}
+            >
+              {activeMis === "BROMCOM" && <Check className="w-3.5 h-3.5" />}
+              <span>Bromcom Cloud</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <span className="text-xs text-slate-400">
+            Current Target:{" "}
+            <strong className="text-emerald-400">{activeMis}</strong> (API v1)
+          </span>
 
           <div className="flex items-center gap-2">
             <button
@@ -62,7 +157,7 @@ export default function MisExtractionDesk({
               <RefreshCw
                 className={`w-3.5 h-3.5 ${loading ? "animate-spin text-emerald-400" : ""}`}
               />
-              <span>Query Live {targetMis} Roster</span>
+              <span>Query Live {activeMis} API</span>
             </button>
 
             <a
@@ -80,8 +175,50 @@ export default function MisExtractionDesk({
           </div>
         </div>
 
+        {/* Drag & Drop File Zone */}
+        <div
+          onDragOver={onDragOver}
+          onDragLeave={onDragLeave}
+          onDrop={onDrop}
+          onClick={() => fileInputRef.current?.click()}
+          className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all ${
+            isDragging
+              ? "border-emerald-500 bg-emerald-500/10"
+              : "border-slate-800 hover:border-slate-700 bg-slate-950/40"
+          }`}
+        >
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={(e) => handleFileUpload(e.target.files?.[0])}
+            accept=".json,.csv"
+            className="hidden"
+          />
+
+          <div className="flex flex-col items-center justify-center space-y-2">
+            <div className="h-10 w-10 bg-slate-900 border border-slate-800 rounded-full flex items-center justify-center text-slate-400">
+              {uploadedFileName ? (
+                <FileCode className="h-5 w-5 text-emerald-400" />
+              ) : (
+                <UploadCloud className="h-5 w-5 text-emerald-400" />
+              )}
+            </div>
+            <div className="text-xs">
+              <span className="font-semibold text-slate-200">
+                {uploadedFileName
+                  ? `Loaded: ${uploadedFileName}`
+                  : `Drag & drop your synthetic ${activeMis} JSON fixture`}
+              </span>
+              <p className="text-[11px] text-slate-500 mt-0.5">
+                or click to browse local filesystem (e.g. {fixtureExampleName})
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Schedule preview telemetry cards */}
         {scheduleData && (
-          <div className="pt-4 border-t border-slate-800/80">
+          <div className="pt-2 border-t border-slate-800/80">
             <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-3">
               <div className="p-3 bg-slate-950/60 border border-slate-800/80 rounded-xl">
                 <div className="flex items-center gap-1.5 text-slate-400 text-[10px] font-medium">
@@ -150,22 +287,26 @@ export default function MisExtractionDesk({
 
             <div className="mt-4 p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center justify-between text-xs text-emerald-300">
               <span>
-                Schedule extraction succeeded. The DIF archive contains{" "}
-                <strong>GPU001.txt</strong> through <strong>GPU008.txt</strong>,
-                ready for import into desktop Untis.
+                Schedule parsed successfully (
+                {uploadedFileName
+                  ? `Source: ${uploadedFileName}`
+                  : `Live ${activeMis} API`}
+                ). Ready to download <strong>GPU001.txt</strong> through{" "}
+                <strong>GPU008.txt</strong>.
               </span>
               <a
                 href={downloadUrl}
                 download
                 className="underline font-semibold hover:text-emerald-200"
               >
-                Download Now
+                Download Package
               </a>
             </div>
           </div>
         )}
       </div>
 
+      {/* Untis Ingestion Instructions */}
       <div className="p-5 bg-slate-900/40 border border-slate-800 rounded-2xl space-y-3">
         <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
           How to Ingest into Untis Desktop
@@ -174,7 +315,7 @@ export default function MisExtractionDesk({
           <li>
             Download and extract the{" "}
             <code className="text-emerald-400 font-mono">
-              Untis_Complete_{targetMis}.zip
+              Untis_Complete_{activeMis}.zip
             </code>{" "}
             archive.
           </li>
@@ -190,7 +331,7 @@ export default function MisExtractionDesk({
           </li>
           <li>
             Execute the import to populate your Untis timetable master with
-            active MIS structures.
+            active {activeMis} structures.
           </li>
         </ol>
       </div>
