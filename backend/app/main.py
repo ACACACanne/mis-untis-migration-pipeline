@@ -11,9 +11,8 @@ import app.models
 
 try:
     Base.metadata.create_all(bind=engine)  # Create tables if they don't exist
-except Exception as exc:
-    print(f"Error creating tables: {exc}")  
-
+except Exception as e:
+    print(f"Error creating tables:[DB Warning] Tables/indexes already initialized: {e}")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

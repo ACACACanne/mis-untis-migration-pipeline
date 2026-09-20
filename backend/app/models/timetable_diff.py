@@ -14,10 +14,10 @@ class TimetableDiff(Base):
     untis_lesson_id = Column(String(100), nullable=True, index=True)
     day_number = Column(Integer, nullable=True)
     period_number = Column(Integer, nullable=True)
-    change_type = Column(String(20), nullable=False, index=True)  # Single index definition
+    change_type = Column(String(20), nullable=False)  # No duplicate index
     slot_payload = Column(JSON, nullable=True)
     staged_slot_payload = Column(JSON, nullable=True)
-    status = Column(String(20), nullable=False, default="STAGED", index=True)  # Single index definition
+    status = Column(String(20), nullable=False, default="STAGED")  # No duplicate index
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     def __repr__(self):
