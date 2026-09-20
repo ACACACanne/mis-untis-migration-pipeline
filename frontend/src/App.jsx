@@ -6,8 +6,6 @@ import {
   ShieldAlert,
   Clock,
   DownloadCloud,
-  Layers,
-  FileCheck2,
   RefreshCw,
 } from "lucide-react";
 
@@ -24,7 +22,7 @@ import KeyRegistryDesk from "./components/registry/KeyRegistryDesk";
 import { pipelineApi } from "./api/pipelineApi";
 
 export default function App() {
-  // Primary pipeline default: MIS to Untis extraction
+  // Primary pipeline default: MIS to Untis Extraction
   const [activeTab, setActiveTab] = useState("mis_to_untis");
   const [targetMis, setTargetMis] = useState("ARBOR");
   const [misStats, setMisStats] = useState(null);
@@ -44,14 +42,12 @@ export default function App() {
     try {
       const [stats, qSummary, diffs] = await Promise.all([
         pipelineApi.previewMisSchedule(targetMis).catch(() => null),
-        pipelineApi
-          .getQuarantineSummary()
-          .catch(() => ({
-            total_quarantined: 0,
-            pending_count: 0,
-            resolved_count: 0,
-            ignored_count: 0,
-          })),
+        pipelineApi.getQuarantineSummary().catch(() => ({
+          total_quarantined: 0,
+          pending_count: 0,
+          resolved_count: 0,
+          ignored_count: 0,
+        })),
         pipelineApi.getStagedDiffs(targetMis).catch(() => []),
       ]);
 
@@ -59,7 +55,7 @@ export default function App() {
       setQuarantineSummary(qSummary);
       setStagedDiffs(diffs);
 
-      // Consolidate elective options for secondary Untis deploy tab
+      // Consolidate elective options if Untis deployment is viewed
       const groupsMap = new Map();
       diffs
         .filter(
@@ -108,16 +104,9 @@ export default function App() {
     loadPipelineData();
   }, [loadPipelineData]);
 
-  const createsCount = stagedDiffs.filter(
-    (d) => d.change_type === "CREATE",
-  ).length;
-  const updatesCount = stagedDiffs.filter(
-    (d) => d.change_type === "UPDATE",
-  ).length;
-
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans antialiased">
-      {/* Header bar hosting the global metrics refresh button adjacent to target switches */}
+      {/* Top Application Header */}
       <Header
         targetMis={targetMis}
         setTargetMis={setTargetMis}
@@ -140,13 +129,15 @@ export default function App() {
             className="flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-slate-200 bg-slate-900 border border-slate-800 rounded-xl hover:bg-slate-800 hover:border-slate-700 transition-all disabled:opacity-50 shrink-0"
           >
             <RefreshCw
-              className={`w-3.5 h-3.5 text-emerald-400 ${loading ? "animate-spin" : ""}`}
+              className={`w-3.5 h-3.5 text-emerald-400 ${
+                loading ? "animate-spin" : ""
+              }`}
             />
             <span>Refresh All Metrics</span>
           </button>
         </div>
 
-        {/* Global Pipeline Telemetry Strip */}
+        {/* Global Primary Telemetry Strip (MIS to Untis focus) */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <MetricCard
             title="MIS Active Slots"
@@ -166,7 +157,7 @@ export default function App() {
             onClick={() => setActiveTab("quarantine")}
           />
           <MetricCard
-            title="Active Target MIS"
+            title="Source MIS"
             value={targetMis}
             icon={Clock}
             subtitle="Live API Connected"
@@ -181,7 +172,7 @@ export default function App() {
           />
         </div>
 
-        {/* PRIMARY PIPELINE TAB: MIS to Untis Extraction */}
+        {/* TAB 1: PRIMARY PIPELINE (MIS to Untis Extraction) */}
         {activeTab === "mis_to_untis" && (
           <MisExtractionDesk
             targetMis={targetMis}
@@ -189,12 +180,12 @@ export default function App() {
           />
         )}
 
-        {/* QUARANTINE DESK TAB */}
+        {/* TAB 2: Quarantine Desk */}
         {activeTab === "quarantine" && (
           <QuarantineDesk onResolved={loadPipelineData} />
         )}
 
-        {/* SECONDARY / OPTIONAL PIPELINE TAB: Untis to MIS Deployment */}
+        {/* TAB 3: SECONDARY / OPTIONAL PIPELINE (Untis to MIS Deployment) */}
         {activeTab === "untis_to_mis" && (
           <div className="space-y-6">
             <div className="p-3 bg-slate-900/50 border border-slate-800 rounded-xl text-xs text-slate-400">
@@ -202,7 +193,7 @@ export default function App() {
                 Secondary Pipeline:
               </span>{" "}
               Ingest an Untis XML timetable file to stage schedule deltas and
-              deploy directly to {targetMis}.
+              deploy updates directly to {targetMis}.
             </div>
 
             <XmlUploadZone onUploadSuccess={loadPipelineData} />
@@ -244,7 +235,7 @@ export default function App() {
           </div>
         )}
 
-        {/* KEY REGISTRY TAB */}
+        {/* TAB 4: Key Registry */}
         {activeTab === "registry" && <KeyRegistryDesk />}
       </main>
     </div>

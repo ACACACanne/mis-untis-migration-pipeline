@@ -1,7 +1,7 @@
 // frontend/src/components/layout/ModeSwitch.jsx
 
 import React from "react";
-import { UploadCloud, ShieldAlert, DownloadCloud, Key } from "lucide-react";
+import { DownloadCloud, ShieldAlert, UploadCloud, Key } from "lucide-react";
 
 export default function ModeSwitch({
   activeTab,
@@ -10,10 +10,10 @@ export default function ModeSwitch({
 }) {
   const tabs = [
     {
-      id: "untis_to_mis",
-      label: "Untis ➔ MIS Deployment",
+      id: "mis_to_untis",
+      label: "MIS ➔ Untis Extraction",
       sublabel: "Primary Pipeline",
-      icon: UploadCloud,
+      icon: DownloadCloud,
       badge: "Primary",
     },
     {
@@ -24,10 +24,10 @@ export default function ModeSwitch({
       badgeCount: quarantineCount,
     },
     {
-      id: "mis_to_untis",
-      label: "MIS ➔ Untis Sync",
-      sublabel: "Secondary / Reverse",
-      icon: DownloadCloud,
+      id: "untis_to_mis",
+      label: "Untis ➔ MIS Deployment",
+      sublabel: "Secondary / Optional",
+      icon: UploadCloud,
       badge: "Secondary",
     },
     {
@@ -55,14 +55,16 @@ export default function ModeSwitch({
             }`}
           >
             <Icon
-              className={`w-4 h-4 ${isActive ? "text-emerald-400" : "text-slate-400"}`}
+              className={`w-4 h-4 ${
+                isActive ? "text-emerald-400" : "text-slate-400"
+              }`}
             />
             <div className="text-left">
               <div className="flex items-center gap-1.5">
                 <span>{tab.label}</span>
                 {tab.badge && (
                   <span
-                    className={`text-[9px] px-1.5 py-0.2 rounded font-semibold border ${
+                    className={`text-[9px] px-1.5 py-0.5 rounded font-semibold border ${
                       tab.badge === "Primary"
                         ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"
                         : "bg-slate-800 text-slate-400 border-slate-700"
