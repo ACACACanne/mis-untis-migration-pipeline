@@ -123,4 +123,8 @@ class MisToUntisExtractor:
             "slots_exported": len(clean_schedule.get("slots", [])),
             "quarantined_anomalies": len(anomalies),
         }
+
+        # Backward compatibility alias
+        MisMasterExtractor = MisToUntisExtractor
+        
         return summary, zip_stream.getvalue()
