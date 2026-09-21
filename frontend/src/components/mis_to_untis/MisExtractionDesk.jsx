@@ -23,6 +23,7 @@ export default function MisExtractionDesk({
   onExtractionCompleted,
 }) {
   const [loading, setLoading] = useState(false);
+  const [downloading, setDownloading] = useState(false);
   const [scheduleData, setScheduleData] = useState(null);
   const [downloadReady, setDownloadReady] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -71,6 +72,39 @@ export default function MisExtractionDesk({
     }
   };
 
+  // Safe In-Memory Blob Download Handler (Uses relative path for Vercel/Render proxy)
+  const handleDownloadPackage = async (e) => {
+    if (e) e.preventDefault();
+    if (!downloadReady || downloading) return;
+
+    setDownloading(true);
+    try {
+      const response = await fetch(
+        `/api/v1/reverse-sync/export-dif?target_mis=${activeMis}`,
+        { method: "GET" },
+      );
+
+      if (!response.ok) {
+        throw new Error(`Server returned HTTP ${response.status}`);
+      }
+
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = `Untis_Complete_${activeMis}.zip`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (err) {
+      console.error("Download failed:", err);
+      alert(`Could not download DIF package: ${err.message}`);
+    } finally {
+      setDownloading(false);
+    }
+  };
+
   const onDragOver = (e) => {
     e.preventDefault();
     setIsDragging(true);
@@ -88,7 +122,6 @@ export default function MisExtractionDesk({
     }
   };
 
-  const downloadUrl = pipelineApi.getDifDownloadUrl(activeMis);
   const fixtureExampleName =
     activeMis === "ARBOR"
       ? "mock_arbor_response.json"
@@ -150,6 +183,7 @@ export default function MisExtractionDesk({
 
           <div className="flex items-center gap-2">
             <button
+              type="button"
               onClick={handleQueryMis}
               disabled={loading}
               className="flex items-center gap-1.5 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-xl border border-slate-700 transition"
@@ -160,18 +194,28 @@ export default function MisExtractionDesk({
               <span>Query Live {activeMis} API</span>
             </button>
 
-            <a
-              href={downloadUrl}
-              download
+            {/* Changed from <a> to <button> with safe Blob download */}
+            <button
+              type="button"
+              onClick={handleDownloadPackage}
+              disabled={!downloadReady || downloading}
               className={`flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl transition ${
-                downloadReady
-                  ? "bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-900/30"
-                  : "bg-slate-800/60 text-slate-500 pointer-events-none border border-slate-800"
+                downloadReady && !downloading
+                  ? "bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-900/30 cursor-pointer"
+                  : "bg-slate-800/60 text-slate-500 pointer-events-none border border-slate-800 cursor-not-allowed"
               }`}
             >
-              <DownloadCloud className="w-4 h-4" />
-              <span>Download Untis DIF Package</span>
-            </a>
+              {downloading ? (
+                <RefreshCw className="w-4 h-4 animate-spin text-emerald-300" />
+              ) : (
+                <DownloadCloud className="w-4 h-4" />
+              )}
+              <span>
+                {downloading
+                  ? "Generating Archive..."
+                  : "Download Untis DIF Package"}
+              </span>
+            </button>
           </div>
         </div>
 
@@ -294,13 +338,14 @@ export default function MisExtractionDesk({
                 ). Ready to download <strong>GPU001.txt</strong> through{" "}
                 <strong>GPU008.txt</strong>.
               </span>
-              <a
-                href={downloadUrl}
-                download
-                className="underline font-semibold hover:text-emerald-200"
+              <button
+                type="button"
+                onClick={handleDownloadPackage}
+                disabled={downloading}
+                className="underline font-semibold hover:text-emerald-200 bg-transparent border-0 p-0 cursor-pointer text-xs"
               >
-                Download Package
-              </a>
+                {downloading ? "Downloading..." : "Download Package"}
+              </button>
             </div>
           </div>
         )}
